@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,13 +26,14 @@ public sealed class CharacterHost : MonoBehaviour
     }
 
 
+    [NonSerialized] private ControlData lastControlInput;
     private void Update()
     {
         //Fetch control data
-        ControlData controlInput = controller!=null ? controller.GetControlCommand(this) : default;
+        lastControlInput = controller!=null ? controller.GetControlCommand(this) : default;
 
         //Update movement with control data
-        _TickMovement(controlInput);
+        _TickMovement(lastControlInput);
     }
     
     private void _TickMovement(ControlData controlInput)
@@ -41,9 +43,15 @@ public sealed class CharacterHost : MonoBehaviour
 
         //Tick velocity
         Vector2 targetVelocity = controlInput.movement * moveSpeed;
-        velocity = Vector2.Lerp(velocity, targetVelocity, Mathf.Pow(moveControlRatio, Time.deltaTime));
+        velocity = Vector2.Lerp(targetVelocity, velocity, Mathf.Pow(1-moveControlRatio, Time.deltaTime));
         
         //Apply velocity to rigidbody
         rb.velocity = velocity;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + (Vector3)lastControlInput.movement);
     }
 }
