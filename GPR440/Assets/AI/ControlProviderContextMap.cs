@@ -1,25 +1,35 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Main 8way
+//https://www.youtube.com/watch?v=6BrZryMz-ac
+
+//Other stuff
+//https://www.youtube.com/watch?v=I5UWsjT4udI&list=PL4QJmtZWf50kvAZap4Xd0JhVEgo9lxdZL&index=2
+//http://www.gameaipro.com/GameAIPro2/GameAIPro2_Chapter18_Context_Steering_Behavior-Driven_Steering_at_the_Macro_Scale.pdf
+
 public class ControlProviderContextMap : IControlProviderAI
 {
+    [Serializable]
     protected struct ContextMapEntry
     {
         public Vector2 direction; //Should be normalized
         public float value;
     }
 
-    [SerializeField] protected ContextMapEntry[] contextMap = new ContextMapEntry[1];
+    [InspectorReadOnly] [SerializeField] protected ContextMapEntry[] contextMap = new ContextMapEntry[1];
 
     private void Start()
     {
         Debug.Assert(contextMap.Length > 0);
 
         //Build context map angles
-        for(int i = 0; i < contextMap.Length; ++i)
+        float angleStep = 360f/contextMap.Length;
+        for (int i = 0; i < contextMap.Length; ++i)
         {
-            float angle = ((float)i) * 360/contextMap.Length;
+            float angle = i*angleStep;
             contextMap[i].direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle));
         }
     }
