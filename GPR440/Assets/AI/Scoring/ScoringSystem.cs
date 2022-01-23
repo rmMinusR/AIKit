@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(Collider))]
 public sealed class ScoringSystem : MonoBehaviour
 {
     [InspectorReadOnly(editMode = AccessMode.ReadOnly, playMode = AccessMode.ReadWrite)] [SerializeField] private int collisionCount;
@@ -10,25 +10,25 @@ public sealed class ScoringSystem : MonoBehaviour
     
     [Space]
     [SerializeField] private float markCooldown;
-    [InspectorReadOnly] [SerializeField] private float lastTimeMarked;
+    [InspectorReadOnly] [SerializeField] private float nextTimeMarkable;
 
     private void Start()
     {
         collisionCount = 0;
-        lastTimeMarked = -markCooldown;
+        nextTimeMarkable = 0;
     }
 
     private void _TryMark()
     {
-        if(lastTimeMarked + markCooldown < Time.time)
+        if(nextTimeMarkable < Time.time)
         {
-            lastTimeMarked = Time.time + markCooldown;
+            nextTimeMarkable = Time.time + markCooldown;
             ++collisionCount;
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter(Collision collision)
     {
-        _TryMark(); //TODO constrain with component tag?
+        if(collision.gameObject.GetComponent<Obstacle>() != null) _TryMark();
     }
 }

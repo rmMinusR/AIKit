@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Rigidbody))]
 public sealed class CharacterHost : MonoBehaviour
 {
     [Header("State")]
@@ -14,11 +14,11 @@ public sealed class CharacterHost : MonoBehaviour
     [Range(0, 1)] [SerializeField] private float moveControlRatio = 0.95f;
 
     //Component references
-    [InspectorReadOnly(editMode = AccessMode.ReadWrite, playMode = AccessMode.ReadOnly)] [SerializeField] private Rigidbody2D rb;
+    [InspectorReadOnly(editMode = AccessMode.ReadWrite, playMode = AccessMode.ReadOnly)] [SerializeField] private Rigidbody rb;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody>();
 
         //Ensure we have valid dependencies
         Debug.Assert(controller != null);
@@ -39,14 +39,17 @@ public sealed class CharacterHost : MonoBehaviour
     private void _TickMovement(ControlData controlInput)
     {
         //Pull velocity from rigidbody
-        Vector2 velocity = rb.velocity;
+        Vector2 velocity = new Vector2(rb.velocity.x, rb.velocity.z);
 
         //Tick velocity
         Vector2 targetVelocity = controlInput.movement * moveSpeed;
         velocity = Vector2.Lerp(targetVelocity, velocity, Mathf.Pow(1-moveControlRatio, Time.deltaTime));
-        
+
         //Apply velocity to rigidbody
-        rb.velocity = velocity;
+        Vector3 v3d = rb.velocity;
+        v3d.x = velocity.x;
+        v3d.z = velocity.y;
+        rb.velocity = v3d;
     }
 
     private void OnDrawGizmos()

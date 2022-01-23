@@ -15,7 +15,7 @@ public class ControlProviderContextMap : IControlProviderAI
     [Serializable]
     protected struct ContextMapEntry
     {
-        public Vector2 direction; //Should be normalized
+        public Vector2 direction; //Must be normalized
         public float value;
     }
 
@@ -46,7 +46,21 @@ public class ControlProviderContextMap : IControlProviderAI
 
     public override ControlData GetControlCommand(CharacterHost context)
     {
-        //throw new System.NotImplementedException();
-        return new ControlData { movement = Vector2.right * ((Time.time%3 > 1.5)?1:-1) };
+        //_RefreshContextMapValues();
+
+        //Find average value
+        float avgValue = 0;
+        for(int i = 0; i < contextMap.Length; ++i) avgValue += contextMap[i].value;
+        avgValue /= contextMap.Length;
+
+        //Find ID with highest associated value
+        int bestChoiceID = 0;
+        for(int i = 1; i < contextMap.Length; ++i) if(contextMap[i].value > contextMap[bestChoiceID].value) bestChoiceID = i;
+
+        //FIXME later
+        float speed = contextMap[bestChoiceID].value - avgValue;
+        speed = Mathf.Clamp01(speed);
+
+        return new ControlData { movement = contextMap[bestChoiceID].direction * speed };
     }
 }
