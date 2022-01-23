@@ -26,35 +26,28 @@ public sealed class CharacterHost : MonoBehaviour
     }
 
 
-    [NonSerialized] private ControlData lastControlInput;
+    [NonSerialized] public ControlData lastControlInput;
+    public Vector3 Movement3D => new Vector3(lastControlInput.movement.x, 0, lastControlInput.movement.y);
     private void Update()
     {
         //Fetch control data
         lastControlInput = controller!=null ? controller.GetControlCommand(this) : default;
 
         //Update movement with control data
-        _TickMovement(lastControlInput);
+        _TickMovement(); //FIXME coupling?
     }
     
-    private void _TickMovement(ControlData controlInput)
+    private void _TickMovement()
     {
         //Pull velocity from rigidbody
-        Vector2 velocity = new Vector2(rb.velocity.x, rb.velocity.z);
+        Vector3 velocity = rb.velocity;
 
         //Tick velocity
-        Vector2 targetVelocity = controlInput.movement * moveSpeed;
-        velocity = Vector2.Lerp(targetVelocity, velocity, Mathf.Pow(1-moveControlRatio, Time.deltaTime));
+        Vector3 targetVelocity = Movement3D * moveSpeed;
+        velocity = Vector3.Lerp(targetVelocity, velocity, Mathf.Pow(1-moveControlRatio, Time.deltaTime));
 
         //Apply velocity to rigidbody
-        Vector3 v3d = rb.velocity;
-        v3d.x = velocity.x;
-        v3d.z = velocity.y;
-        rb.velocity = v3d;
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawLine(transform.position, transform.position + (Vector3)lastControlInput.movement);
+        velocity.y = rb.velocity.y; //Don't affect Y axis
+        rb.velocity = velocity;
     }
 }
