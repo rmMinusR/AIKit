@@ -33,6 +33,8 @@ public sealed class CharacterHost : MonoBehaviour
         //Fetch control data
         lastControlInput = controller!=null ? controller.GetControlCommand(this) : default;
 
+        Debug.Log(lastControlInput.movement);
+
         //Update movement with control data
         _TickMovement(); //FIXME coupling?
     }

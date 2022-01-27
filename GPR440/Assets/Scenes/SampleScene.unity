@@ -214,8 +214,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 186210711}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.5, z: -20}
-  m_LocalScale: {x: 4, y: 1, z: 0.5}
+  m_LocalPosition: {x: 0, y: 2, z: -20}
+  m_LocalScale: {x: 4, y: 1, z: 0.4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 8
@@ -377,7 +377,7 @@ MonoBehaviour:
   host: {fileID: 1560930428}
   lastInputVisualizer: {fileID: 249830520}
   baseOffset: 1
-  movementScale: 1
+  movementScale: 5
 --- !u!1 &305679177
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,8 +469,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 305679177}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -20, y: 2.5, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 4}
+  m_LocalPosition: {x: -20, y: 2, z: 0}
+  m_LocalScale: {x: 0.4, y: 1, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -578,8 +578,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342286232}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 20, y: 2.5, z: 0}
-  m_LocalScale: {x: 0.5, y: 1, z: 4}
+  m_LocalPosition: {x: 20, y: 2, z: 0}
+  m_LocalScale: {x: 0.4, y: 1, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
@@ -959,8 +959,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1349865335}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 2.5, z: 20}
-  m_LocalScale: {x: 4, y: 1, z: 0.5}
+  m_LocalPosition: {x: 0, y: 2, z: 20}
+  m_LocalScale: {x: 4, y: 1, z: 0.4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
@@ -1010,10 +1010,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee97af3fa12fb14289326559c2bca85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1894546762}
+  controller: {fileID: 1560930431}
   moveSpeed: 8
   moveControlRatio: 0.98
-  rb: {fileID: 0}
+  rb: {fileID: 1560930432}
 --- !u!136 &1560930429
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1053,26 +1053,91 @@ MonoBehaviour:
   m_GameObject: {fileID: 1560930427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 667b253d68d22d94fbd96c6315cd939e, type: 3}
+  m_Script: {fileID: 11500000, guid: 345c4fd425b73a346a8b7e2a28eb62e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   contextMap:
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
-  - direction: {x: 0, y: 0}
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
     value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  wanderWeight: 1
+  wanderDirectionNoiseAmplitude: 1
+  wanderSpeedNoiseAmplitude: 1
+  wanderDirectionNoiseGenerator:
+    mSeed: 288849
+    mFrequency: 1
+    mNoiseType: 0
+    mRotationType3D: 0
+    mTransformType3D: 3
+    mFractalType: 0
+    mOctaves: 3
+    mLacunarity: 2
+    mGain: 0.5
+    mWeightedStrength: 0
+    mPingPongStrength: 2
+    mFractalBounding: 0.5714286
+    mCellularDistanceFunction: 1
+    mCellularReturnType: 1
+    mCellularJitterModifier: 1
+    mDomainWarpType: 0
+    mWarpTransformType3D: 3
+    mDomainWarpAmp: 1
+  wanderSpeedNoiseGenerator:
+    mSeed: 223377
+    mFrequency: 1
+    mNoiseType: 0
+    mRotationType3D: 0
+    mTransformType3D: 3
+    mFractalType: 0
+    mOctaves: 3
+    mLacunarity: 2
+    mGain: 0.5
+    mWeightedStrength: 0
+    mPingPongStrength: 2
+    mFractalBounding: 0.5714286
+    mCellularDistanceFunction: 1
+    mCellularReturnType: 1
+    mCellularJitterModifier: 1
+    mDomainWarpType: 0
+    mWarpTransformType3D: 3
+    mDomainWarpAmp: 1
+  wanderDirection: 0
+  wanderSpeed: 1
+  obstacleWeight: 1
+  maxProbeDistance: 4
 --- !u!54 &1560930432
 Rigidbody:
   m_ObjectHideFlags: 0
