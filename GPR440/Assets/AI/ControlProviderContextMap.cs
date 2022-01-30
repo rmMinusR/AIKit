@@ -66,7 +66,10 @@ public abstract class ControlProviderContextMap : IControlProviderAI
         speed *= 2; //TODO use standard deviation instead
         speed = Mathf.Clamp01(speed);
 
-        return new ControlData { movement = new Vector2(contextMap[bestChoiceID].direction.x, contextMap[bestChoiceID].direction.z) * speed };
+        return new ControlData {
+            targetSpeed = speed,
+            steering = context.SteerTowards(contextMap[bestChoiceID].sourceAngle)
+        };
     }
 
     protected abstract void _RefreshContextMapValues();

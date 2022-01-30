@@ -15,5 +15,7 @@ public abstract class IControlProvider : MonoBehaviour
 [Serializable]
 public struct ControlData
 {
-    public Vector2 movement;
+    public float steering;
+    public float targetSpeed;
+    //public Vector2 movement;
 }

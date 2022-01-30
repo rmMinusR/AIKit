@@ -7,10 +7,16 @@ public sealed class AIImplementation : ControlProviderContextMap
     [SerializeField] [Min(0)] private float wanderWeight = 1;
     [SerializeField] [Min(0)] private float wanderDirectionNoiseAmplitude = 1;
     [SerializeField] [Min(0)] private float wanderSpeedNoiseAmplitude = 1;
-    [SerializeField] private FastNoiseLite wanderDirectionNoiseGenerator = new FastNoiseLite(0x46851); //Arbitrary seed
-    [SerializeField] private FastNoiseLite wanderSpeedNoiseGenerator     = new FastNoiseLite(0x36891); //Arbitrary seed
+    [SerializeField] private FastNoiseLite wanderDirectionNoiseGenerator;
+    [SerializeField] private FastNoiseLite wanderSpeedNoiseGenerator;
     [SerializeField] private float wanderDirection;
     [SerializeField] private float wanderSpeed;
+
+    private void Awake()
+    {
+        wanderDirectionNoiseGenerator.SetSeed(GetInstanceID());//Random.Range(0, 1<<12));
+        wanderSpeedNoiseGenerator    .SetSeed(GetInstanceID()^0x2894);//Random.Range(0, 1<<12));
+    }
 
     protected override void _RefreshContextMapValues()
     {
@@ -44,7 +50,6 @@ public sealed class AIImplementation : ControlProviderContextMap
         //Wander
         float angleDiff = Mathf.Abs(wanderDirection-entry.sourceAngle)*Mathf.Rad2Deg;
         if(angleDiff > 180) angleDiff = 360-angleDiff;
-        Debug.Log(angleDiff);
         entry.value += wanderWeight * wanderSpeed * (1-angleDiff/180);
     }
 }
