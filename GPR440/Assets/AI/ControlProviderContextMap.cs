@@ -80,6 +80,8 @@ public abstract class ControlProviderContextMap : IControlProviderAI
 
     public virtual float GetSmoothedValueAt(float angleRadians)
     {
+        angleRadians = Ext.PositiveWrap(angleRadians);
+
         float radiansPerMapEntry = Mathf.PI*2/contextMap.Length;
         float index = angleRadians/radiansPerMapEntry;
         int lowerIndex = (int)index;

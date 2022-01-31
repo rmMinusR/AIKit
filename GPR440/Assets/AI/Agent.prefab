@@ -130,7 +130,7 @@ MonoBehaviour:
     mDomainWarpAmp: 1
   obstacleWeight: 4
   maxProbeDistance: 4
-  dynamicAvoidWeight: 1
+  dynamicAvoidWeight: 3
   dynamicAvoidRange: 1
 --- !u!114 &501425884862704422
 MonoBehaviour:

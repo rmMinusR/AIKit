@@ -55,7 +55,7 @@ public sealed class AIImplementation : ControlProviderContextMap
             //Select closest, filtered excluding self
             foreach(RaycastHit h in hits) if(h.distance < closestHit.distance && h.collider.gameObject != gameObject && h.collider.gameObject.GetComponent<Obstacle>() != null) closestHit = h;
             float pressure = 1-closestHit.distance/maxProbeDistance;
-            entry.value += -pressure * obstacleWeight;
+            entry.value -= pressure * obstacleWeight;
         }
 
         //Wander
@@ -72,7 +72,7 @@ public sealed class AIImplementation : ControlProviderContextMap
             float dist = diff.magnitude;
 
             float pressure = 1 - Mathf.Clamp01(dist / dynamicAvoidRange);
-            pressure *= Ext.AngleDiffUnsigned(context.Heading, ang);
+            pressure *= 1 - Ext.AngleDiffUnsigned(context.Heading, ang)/Mathf.PI;
 
             entry.value -= pressure * dynamicAvoidWeight;
         }
