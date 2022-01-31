@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 501425884862704422}
   - component: {fileID: 501425884862704423}
   - component: {fileID: 501425884862704602}
+  - component: {fileID: 3657516832957771420}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -51,7 +52,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 8
   moveGripRatio: 0.95
-  moveControlAccelRate: 0.5
+  moveControlAccelRate: 0.9
   moveControlSteerRate: 8
   controller: {fileID: 501425884862704600}
   heading: 0
@@ -106,17 +107,16 @@ MonoBehaviour:
   - sourceAngle: 0
     direction: {x: 0, y: 0, z: 0}
     value: 0
-  wanderWeight: 1
-  wanderDirectionNoiseAmplitude: 1
-  wanderSpeedNoiseAmplitude: 1
+  currentHeadingWeight: 0.3
+  wanderWeight: 2
   wanderDirectionNoiseGenerator:
     mSeed: 288849
-    mFrequency: 1
+    mFrequency: 0.03
     mNoiseType: 0
     mRotationType3D: 0
     mTransformType3D: 3
     mFractalType: 0
-    mOctaves: 3
+    mOctaves: 1
     mLacunarity: 2
     mGain: 0.5
     mWeightedStrength: 0
@@ -128,27 +128,6 @@ MonoBehaviour:
     mDomainWarpType: 0
     mWarpTransformType3D: 3
     mDomainWarpAmp: 1
-  wanderSpeedNoiseGenerator:
-    mSeed: 223377
-    mFrequency: 1
-    mNoiseType: 0
-    mRotationType3D: 0
-    mTransformType3D: 3
-    mFractalType: 0
-    mOctaves: 3
-    mLacunarity: 2
-    mGain: 0.5
-    mWeightedStrength: 0
-    mPingPongStrength: 2
-    mFractalBounding: 0.5714286
-    mCellularDistanceFunction: 1
-    mCellularReturnType: 1
-    mCellularJitterModifier: 1
-    mDomainWarpType: 0
-    mWarpTransformType3D: 3
-    mDomainWarpAmp: 1
-  wanderDirection: 0
-  wanderSpeed: 1
   obstacleWeight: 4
   maxProbeDistance: 4
 --- !u!114 &501425884862704422
@@ -196,6 +175,18 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3657516832957771420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501425884862704604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c79df54bd34dfa46bf08fb3b29d7615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &501425886256472017
 GameObject:
   m_ObjectHideFlags: 0

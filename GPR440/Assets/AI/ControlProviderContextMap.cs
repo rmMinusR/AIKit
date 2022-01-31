@@ -35,20 +35,31 @@ public abstract class ControlProviderContextMap : IControlProviderAI
         }
     }
 
-    private void OnDrawGizmos()
+    protected virtual void OnDrawGizmos()
     {
-        foreach(ContextMapEntry i in contextMap)
+        _FindHighestAndLowest(recalc: false);
+
+        foreach (ContextMapEntry i in contextMap)
         {
             Vector3 rootPos = transform.position + i.direction;
-            Gizmos.color = i.value < 0 ? Color.Lerp(Color.yellow, Color.red, -i.value) : Color.Lerp(Color.yellow, Color.green, i.value);
-            Gizmos.DrawSphere(rootPos, 0.2f);
-            Gizmos.DrawLine(rootPos, rootPos + i.direction * Mathf.Abs(i.value));
+            Vector3 endPos = rootPos + i.direction * Mathf.Abs(i.value);
+
+            float renormalizedVal = RenormalizeValue(i.value);
+
+            Gizmos.color = renormalizedVal < 0 ? Color.Lerp(Color.yellow, Color.red, -renormalizedVal) : Color.Lerp(Color.yellow, Color.green, renormalizedVal);
+            Gizmos.DrawLine(rootPos, endPos);
+            Gizmos.DrawSphere(endPos, 0.2f);
+            //Gizmos.DrawSphere(rootPos, 0.2f);
+
+#if UNITY_EDITOR
+            UnityEditor.Handles.Label(transform.position+i.direction*0.75f, i.value.ToString());
+#endif
         }
     }
 
     public override ControlData GetControlCommand(CharacterHost context)
     {
-        _RefreshContextMapValues(context);
+        RefreshContextMapValues(context);
 
         //Find average value
         float avgValue = 0;
@@ -61,16 +72,53 @@ public abstract class ControlProviderContextMap : IControlProviderAI
 
         //TODO lerp angle based on gradient
 
-        //FIXME later
-        float speed = contextMap[bestChoiceID].value - avgValue;
-        speed *= 2; //TODO use standard deviation instead
-        speed = Mathf.Clamp01(speed);
-
         return new ControlData {
-            targetSpeed = speed,
+            targetSpeed = RenormalizeValue(GetSmoothedValueAt(context.Heading)),
             steering = context.SteerTowards(contextMap[bestChoiceID].sourceAngle)
         };
     }
 
-    protected abstract void _RefreshContextMapValues(CharacterHost context);
+    public virtual float GetSmoothedValueAt(float angleRadians)
+    {
+        float radiansPerMapEntry = Mathf.PI*2/contextMap.Length;
+        float index = angleRadians/radiansPerMapEntry;
+        int lowerIndex = (int)index;
+        int upperIndex = (lowerIndex + 1) % contextMap.Length;
+        float lerpAmt = index%1;
+
+        return Mathf.Lerp(contextMap[lowerIndex].value, contextMap[upperIndex].value, lerpAmt);
+    }
+
+    private float? highestVal = null;
+    private float? lowestVal  = null;
+    private void _FindHighestAndLowest(bool recalc = false)
+    {
+        if(recalc)
+        {
+            highestVal = null;
+            lowestVal  = null;
+        }
+
+        foreach (ContextMapEntry i in contextMap)
+        {
+            if (!highestVal.HasValue || i.value > highestVal.Value) highestVal = i.value;
+            if (!lowestVal .HasValue || i.value < lowestVal .Value) lowestVal  = i.value;
+        }
+    }
+
+    public float RenormalizeValue(float val)
+    {
+        _FindHighestAndLowest(recalc: false);
+
+        float renormalizedVal = val < 0 ? val/-lowestVal.Value : val/highestVal.Value;
+        if (float.IsNaN(renormalizedVal)) renormalizedVal = 0;
+
+        return renormalizedVal;
+    }
+
+    protected virtual void RefreshContextMapValues(CharacterHost context)
+    {
+        highestVal = null;
+        lowestVal  = null;
+    }
 }

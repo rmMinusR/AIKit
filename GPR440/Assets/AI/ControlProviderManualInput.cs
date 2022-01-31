@@ -25,7 +25,7 @@ public sealed class ControlProviderManualInput : IControlProvider
     public override ControlData GetControlCommand(CharacterHost context)
     {
         return new ControlData {
-            steering = boundControl.ReadValue<Vector2>().x,
+            steering = -boundControl.ReadValue<Vector2>().x,
             targetSpeed = boundControl.ReadValue<Vector2>().y
         };
     }

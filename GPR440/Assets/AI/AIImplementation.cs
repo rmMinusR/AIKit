@@ -3,21 +3,30 @@ using UnityEngine;
 
 public sealed class AIImplementation : ControlProviderContextMap
 {
+    [Space]
+    [SerializeField] [Min(0)] private float currentHeadingWeight = 1;
+
     [Header("Wander")]
     [SerializeField] [Min(0)] private float wanderWeight = 1;
-    [SerializeField] [Min(0)] private float wanderDirectionNoiseAmplitude = 1;
-    [SerializeField] [Min(0)] private float wanderSpeedNoiseAmplitude = 1;
     [SerializeField] private FastNoiseLite wanderDirectionNoiseGenerator;
-    [SerializeField] private FastNoiseLite wanderSpeedNoiseGenerator;
 
     private void Awake()
     {
-        wanderDirectionNoiseGenerator.SetSeed(GetInstanceID());//Random.Range(0, 1<<12));
-        wanderSpeedNoiseGenerator    .SetSeed(GetInstanceID()^0x2894);//Random.Range(0, 1<<12));
+        wanderDirectionNoiseGenerator.SetSeed(GetInstanceID());
     }
 
-    protected override void _RefreshContextMapValues(CharacterHost context)
+    public override ControlData GetControlCommand(CharacterHost context)
     {
+        ControlData data = base.GetControlCommand(context);
+
+        //data.steering += directionNoise;
+
+        return data;
+    }
+
+    protected override void RefreshContextMapValues(CharacterHost context)
+    {
+        base.RefreshContextMapValues(context);
         for (int i = 0; i < contextMap.Length; ++i) _RefreshContextMapValue(ref contextMap[i], context);
     }
 
@@ -29,6 +38,9 @@ public sealed class AIImplementation : ControlProviderContextMap
     private void _RefreshContextMapValue(ref ContextMapEntry entry, CharacterHost context)
     {
         entry.value = 0;
+
+        //Prefer current heading
+        entry.value += (1-Mathf.Abs(context.SteerTowards(entry.sourceAngle)/Mathf.PI))*currentHeadingWeight;
         
         //Avoidance: Whisker raycast
         RaycastHit[] hits = Physics.RaycastAll(new Ray { origin = transform.position, direction = entry.direction }, maxProbeDistance);
@@ -39,8 +51,7 @@ public sealed class AIImplementation : ControlProviderContextMap
         entry.value += -pressure * obstacleWeight;
 
         //Wander
-        float directionNoise = wanderDirectionNoiseGenerator.GetNoise(0, Time.time) * wanderDirectionNoiseAmplitude * Time.deltaTime;
-        float f = context.SteerTowards(entry.sourceAngle+directionNoise);
-        entry.value += wanderWeight * (1-f/Mathf.PI);
+        float directionNoise = wanderDirectionNoiseGenerator.GetNoise(entry.direction.x, Time.time, entry.direction.z) * wanderWeight;
+        entry.value += Mathf.Abs(directionNoise);
     }
 }
