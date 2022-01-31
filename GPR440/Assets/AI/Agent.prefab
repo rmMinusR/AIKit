@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 501425884862704422}
   - component: {fileID: 501425884862704423}
   - component: {fileID: 501425884862704602}
-  - component: {fileID: 3657516832957771420}
+  - component: {fileID: 2095490868040939650}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -130,6 +130,8 @@ MonoBehaviour:
     mDomainWarpAmp: 1
   obstacleWeight: 4
   maxProbeDistance: 4
+  dynamicAvoidWeight: 1
+  dynamicAvoidRange: 1
 --- !u!114 &501425884862704422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -175,7 +177,7 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3657516832957771420
+--- !u!114 &2095490868040939650
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,6 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c79df54bd34dfa46bf08fb3b29d7615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 2
 --- !u!1 &501425886256472017
 GameObject:
   m_ObjectHideFlags: 0

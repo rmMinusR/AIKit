@@ -7,4 +7,12 @@ using UnityEngine;
 /// </summary>
 public class Obstacle : MonoBehaviour
 {
+    public enum Type
+    {
+        Static,
+        Kinematic,
+        Dynamic
+    }
+
+    public Type type;
 }

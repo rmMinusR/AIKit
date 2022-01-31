@@ -74,7 +74,7 @@ public abstract class ControlProviderContextMap : IControlProviderAI
 
         return new ControlData {
             targetSpeed = RenormalizeValue(GetSmoothedValueAt(context.Heading)),
-            steering = context.SteerTowards(contextMap[bestChoiceID].sourceAngle)
+            steering = Ext.AngleDiffSigned(context.Heading, contextMap[bestChoiceID].sourceAngle)
         };
     }
 

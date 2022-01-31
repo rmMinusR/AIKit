@@ -66,18 +66,4 @@ public sealed class CharacterHost : MonoBehaviour
         velocity.y = rb.velocity.y; //Don't affect Y axis
         rb.velocity = velocity;
     }
-
-    public float SteerTowards(float targetAngleRadians)
-    {
-        const float TWO_PI = Mathf.PI*2;
-
-        targetAngleRadians -= Mathf.FloorToInt(targetAngleRadians/TWO_PI) * TWO_PI;
-
-        float diff = targetAngleRadians - Heading;
-
-        diff -= Mathf.FloorToInt(diff/TWO_PI) * TWO_PI;
-        if(diff > Mathf.PI) diff -= TWO_PI;
-
-        return diff;
-    }
 }
