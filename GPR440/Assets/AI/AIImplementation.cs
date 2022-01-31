@@ -9,8 +9,6 @@ public sealed class AIImplementation : ControlProviderContextMap
     [SerializeField] [Min(0)] private float wanderSpeedNoiseAmplitude = 1;
     [SerializeField] private FastNoiseLite wanderDirectionNoiseGenerator;
     [SerializeField] private FastNoiseLite wanderSpeedNoiseGenerator;
-    [SerializeField] private float wanderDirection;
-    [SerializeField] private float wanderSpeed;
 
     private void Awake()
     {
@@ -18,16 +16,9 @@ public sealed class AIImplementation : ControlProviderContextMap
         wanderSpeedNoiseGenerator    .SetSeed(GetInstanceID()^0x2894);//Random.Range(0, 1<<12));
     }
 
-    protected override void _RefreshContextMapValues()
+    protected override void _RefreshContextMapValues(CharacterHost context)
     {
-        //Update wander direction
-        wanderDirection += wanderDirectionNoiseGenerator.GetNoise(0, Time.time) * wanderDirectionNoiseAmplitude * Time.deltaTime;
-        wanderSpeed     += wanderSpeedNoiseGenerator    .GetNoise(0, Time.time) * wanderSpeedNoiseAmplitude     * Time.deltaTime;
-        
-        wanderDirection %= Mathf.PI*2;
-        wanderSpeed = Mathf.Clamp(wanderSpeed, 0.3f, 1);
-
-        for (int i = 0; i < contextMap.Length; ++i) _RefreshContextMapValue(ref contextMap[i]);
+        for (int i = 0; i < contextMap.Length; ++i) _RefreshContextMapValue(ref contextMap[i], context);
     }
 
 
@@ -35,10 +26,10 @@ public sealed class AIImplementation : ControlProviderContextMap
     [SerializeField] [Min(0)] private float obstacleWeight = 1;
     [SerializeField] [Min(0)] private float maxProbeDistance;
 
-    private void _RefreshContextMapValue(ref ContextMapEntry entry)
+    private void _RefreshContextMapValue(ref ContextMapEntry entry, CharacterHost context)
     {
         entry.value = 0;
-
+        
         //Avoidance: Whisker raycast
         RaycastHit[] hits = Physics.RaycastAll(new Ray { origin = transform.position, direction = entry.direction }, maxProbeDistance);
         RaycastHit closestHit = new RaycastHit { distance = maxProbeDistance };
@@ -48,8 +39,8 @@ public sealed class AIImplementation : ControlProviderContextMap
         entry.value += -pressure * obstacleWeight;
 
         //Wander
-        float angleDiff = Mathf.Abs(wanderDirection-entry.sourceAngle)*Mathf.Rad2Deg;
-        if(angleDiff > 180) angleDiff = 360-angleDiff;
-        entry.value += wanderWeight * wanderSpeed * (1-angleDiff/180);
+        float directionNoise = wanderDirectionNoiseGenerator.GetNoise(0, Time.time) * wanderDirectionNoiseAmplitude * Time.deltaTime;
+        float f = context.SteerTowards(entry.sourceAngle+directionNoise);
+        entry.value += wanderWeight * (1-f/Mathf.PI);
     }
 }

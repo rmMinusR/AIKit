@@ -48,7 +48,7 @@ public abstract class ControlProviderContextMap : IControlProviderAI
 
     public override ControlData GetControlCommand(CharacterHost context)
     {
-        _RefreshContextMapValues();
+        _RefreshContextMapValues(context);
 
         //Find average value
         float avgValue = 0;
@@ -72,5 +72,5 @@ public abstract class ControlProviderContextMap : IControlProviderAI
         };
     }
 
-    protected abstract void _RefreshContextMapValues();
+    protected abstract void _RefreshContextMapValues(CharacterHost context);
 }
