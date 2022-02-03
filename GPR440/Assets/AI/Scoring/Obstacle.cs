@@ -15,4 +15,8 @@ public class Obstacle : MonoBehaviour
     }
 
     public Type type;
+
+    public static List<Obstacle> OBSTACLES = new List<Obstacle>();
+    private void OnEnable() => OBSTACLES.Add(this);
+    private void OnDisable() => OBSTACLES.Remove(this);
 }

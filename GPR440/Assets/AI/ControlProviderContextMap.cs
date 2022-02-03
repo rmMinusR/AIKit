@@ -52,7 +52,7 @@ public abstract class ControlProviderContextMap : IControlProviderAI
             //Gizmos.DrawSphere(rootPos, 0.2f);
 
 #if UNITY_EDITOR
-            UnityEditor.Handles.Label(transform.position+i.direction*0.75f, i.value.ToString());
+            //UnityEditor.Handles.Label(transform.position+i.direction*0.75f, i.value.ToString());
 #endif
         }
     }

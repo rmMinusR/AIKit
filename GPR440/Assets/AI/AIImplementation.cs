@@ -7,6 +7,7 @@ public sealed class AIImplementation : ControlProviderContextMap
 {
     [Space]
     [SerializeField] [Min(0)] private float currentHeadingWeight = 1;
+    [SerializeField] private AnimationCurve currentHeadingShapeFunc = AnimationCurve.Linear(0, 1, 1, 0);
 
     [Header("Wander")]
     [SerializeField] [Min(0)] private float wanderWeight = 1;
@@ -40,13 +41,15 @@ public sealed class AIImplementation : ControlProviderContextMap
     [Header("Dynamic avoidance")]
     [SerializeField] [Min(0)] private float dynamicAvoidWeight = 1;
     [SerializeField] [Min(0)] private float dynamicAvoidRange = 1;
+    [SerializeField] private AnimationCurve dynamicAvoidShapeFunc = AnimationCurve.Linear(0, 1, 1, 0);
 
     private void _RefreshContextMapValue(ref ContextMapEntry entry, CharacterHost context)
     {
         entry.value = 0;
 
         //Prefer current heading
-        entry.value += (1-Ext.HalfWrap(context.Heading, entry.sourceAngle)/Mathf.PI)*currentHeadingWeight;
+        float angleToHeading = Ext.AngleDiffUnsigned(context.Heading, entry.sourceAngle);
+        entry.value += currentHeadingShapeFunc.Evaluate(angleToHeading/Mathf.PI)*currentHeadingWeight;
 
         //Avoidance: Whisker raycast
         {
@@ -63,8 +66,7 @@ public sealed class AIImplementation : ControlProviderContextMap
         entry.value += Mathf.Abs(directionNoise);
 
         //Spacing
-        HashSet<Obstacle> nearby = new HashSet<Obstacle>(FindObjectsOfType<Obstacle>().Where(o => o.type != Obstacle.Type.Static));
-        nearby.Remove(context.GetComponent<Obstacle>());
+        HashSet<Obstacle> nearby = new HashSet<Obstacle>(Obstacle.OBSTACLES.Where(o => o.type != Obstacle.Type.Static && o.gameObject != this.gameObject));
         foreach(Obstacle o in nearby)
         {
             Vector3 diff = o.transform.position - context.transform.position;
@@ -72,7 +74,7 @@ public sealed class AIImplementation : ControlProviderContextMap
             float dist = diff.magnitude;
 
             float pressure = 1 - Mathf.Clamp01(dist / dynamicAvoidRange);
-            pressure *= 1 - Ext.AngleDiffUnsigned(context.Heading, ang)/Mathf.PI;
+            pressure *= Mathf.Clamp01(dynamicAvoidShapeFunc.Evaluate(Mathf.Clamp01(Ext.AngleDiffUnsigned(entry.sourceAngle, ang)/Mathf.PI)));
 
             entry.value -= pressure * dynamicAvoidWeight;
         }
