@@ -62,7 +62,8 @@ public sealed class ContextMapSteering : ISteeringProviderAI
 
     public override ControlData GetControlCommand()
     {
-        RefreshContextMapValues(host);
+        //Update values
+        RefreshContextMapValues();
 
         //Find average value
         float avgValue = 0;
@@ -121,9 +122,17 @@ public sealed class ContextMapSteering : ISteeringProviderAI
         return renormalizedVal;
     }
 
-    private void RefreshContextMapValues(CharacterHost context)
+    private void RefreshContextMapValues()
     {
+        //Reset values
+        for (int i = 0; i < entries.Length; ++i) entries[i].value = 0;
         highestVal = null;
         lowestVal  = null;
+
+        //Poll values
+        foreach (IContextProvider i in GetComponents<IContextProvider>()) if(i.isActiveAndEnabled) i.RefreshContextMapValues();
+
+        //Recalc bounds
+        _FindHighestAndLowest(recalc: true);
     }
 }

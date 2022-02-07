@@ -5,6 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Empty pseudotag class for objects that should be avoided, and should mark score down when collided with
 /// </summary>
+[RequireComponent(typeof(Collider))]
 public class Obstacle : MonoBehaviour
 {
     public enum Type
@@ -15,6 +16,13 @@ public class Obstacle : MonoBehaviour
     }
 
     public Type type;
+
+    [InspectorReadOnly] public Collider mainCollider;
+
+    private void Awake()
+    {
+        mainCollider = GetComponent<Collider>();
+    }
 
     public static List<Obstacle> OBSTACLES = new List<Obstacle>();
     private void OnEnable() => OBSTACLES.Add(this);

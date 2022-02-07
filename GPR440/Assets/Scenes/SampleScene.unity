@@ -320,8 +320,8 @@ GameObject:
   - component: {fileID: 186210715}
   - component: {fileID: 186210714}
   - component: {fileID: 186210713}
-  - component: {fileID: 186210712}
   - component: {fileID: 186210716}
+  - component: {fileID: 186210712}
   m_Layer: 0
   m_Name: Wall Z-
   m_TagString: Untagged
@@ -329,8 +329,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &186210712
-MeshCollider:
+--- !u!65 &186210712
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -339,10 +339,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10, y: 0.2, z: 10.000002}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &186210713
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -419,6 +418,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  mainCollider: {fileID: 0}
 --- !u!4 &237340644 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 501425884862704601, guid: 6e280538d3f23794dbe66de0a59474e0, type: 3}
@@ -493,8 +493,8 @@ GameObject:
   - component: {fileID: 305679181}
   - component: {fileID: 305679180}
   - component: {fileID: 305679179}
-  - component: {fileID: 305679178}
   - component: {fileID: 305679182}
+  - component: {fileID: 305679178}
   m_Layer: 0
   m_Name: Wall X-
   m_TagString: Untagged
@@ -502,8 +502,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &305679178
-MeshCollider:
+--- !u!65 &305679178
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -512,10 +512,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10.000002, y: 0.2, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &305679179
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -592,6 +591,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  mainCollider: {fileID: 0}
 --- !u!1001 &308548875
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -727,8 +727,8 @@ GameObject:
   - component: {fileID: 342286236}
   - component: {fileID: 342286235}
   - component: {fileID: 342286234}
-  - component: {fileID: 342286233}
   - component: {fileID: 342286237}
+  - component: {fileID: 342286233}
   m_Layer: 0
   m_Name: Wall X+
   m_TagString: Untagged
@@ -736,8 +736,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &342286233
-MeshCollider:
+--- !u!65 &342286233
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -746,10 +746,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10.000002, y: 0.2, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &342286234
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -826,6 +825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  mainCollider: {fileID: 0}
 --- !u!1001 &416966793
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1839,8 +1839,8 @@ GameObject:
   - component: {fileID: 1349865339}
   - component: {fileID: 1349865338}
   - component: {fileID: 1349865337}
-  - component: {fileID: 1349865336}
   - component: {fileID: 1349865340}
+  - component: {fileID: 1349865336}
   m_Layer: 0
   m_Name: Wall Z+
   m_TagString: Untagged
@@ -1848,8 +1848,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &1349865336
-MeshCollider:
+--- !u!65 &1349865336
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1858,10 +1858,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10, y: 0.2, z: 10.000002}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1349865337
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1938,6 +1937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  mainCollider: {fileID: 0}
 --- !u!1001 &1406992442
 PrefabInstance:
   m_ObjectHideFlags: 0
