@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 501425884862704423}
   - component: {fileID: 501425884862704602}
   - component: {fileID: 2095490868040939650}
+  - component: {fileID: 5919378383324760455}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Untagged
@@ -55,7 +56,7 @@ MonoBehaviour:
   moveGripRatio: 0.95
   moveControlAccelRate: 0.9
   moveControlSteerRate: 8
-  controller: {fileID: 501425884862704600}
+  controller: {fileID: 5919378383324760455}
   heading: 0
   speed: 0
   rb: {fileID: 501425884862704423}
@@ -71,43 +72,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 345c4fd425b73a346a8b7e2a28eb62e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextMap:
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
-  - sourceAngle: 0
-    direction: {x: 0, y: 0, z: 0}
-    value: 0
   currentHeadingWeight: 0.3
   currentHeadingShapeFunc:
     serializedVersion: 2
@@ -239,6 +203,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+--- !u!114 &5919378383324760455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501425884862704604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 667b253d68d22d94fbd96c6315cd939e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entries:
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  - sourceAngle: 0
+    direction: {x: 0, y: 0, z: 0}
+    value: 0
+  host: {fileID: 501425884862704603}
 --- !u!1 &501425886256472017
 GameObject:
   m_ObjectHideFlags: 0

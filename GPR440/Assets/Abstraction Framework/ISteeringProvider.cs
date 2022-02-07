@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class IControlProvider : MonoBehaviour
+public abstract class ISteeringProvider : MonoBehaviour
 {
-    public abstract ControlData GetControlCommand(CharacterHost context);
+    public abstract ControlData GetControlCommand();
 }
 
 

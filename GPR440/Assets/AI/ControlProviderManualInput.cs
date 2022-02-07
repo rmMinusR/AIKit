@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInput))]
-public sealed class ControlProviderManualInput : IControlProvider
+public sealed class ControlProviderManualInput : ISteeringProvider
 {
     [SerializeField] private string controlBindingName = "Movement";
     [SerializeField] [HideInInspector] private InputAction boundControl;
@@ -22,7 +22,7 @@ public sealed class ControlProviderManualInput : IControlProvider
         Debug.Assert(boundControl != null);
     }
 
-    public override ControlData GetControlCommand(CharacterHost context)
+    public override ControlData GetControlCommand()
     {
         return new ControlData {
             steering = -boundControl.ReadValue<Vector2>().x,

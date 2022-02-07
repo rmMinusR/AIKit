@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public sealed class AIImplementation : ControlProviderContextMap
+[RequireComponent(typeof(ContextMapSteering))]
+public sealed class AIImplementation : MonoBehaviour
 {
     [Space]
     [SerializeField] [Min(0)] private float currentHeadingWeight = 1;
@@ -13,26 +14,20 @@ public sealed class AIImplementation : ControlProviderContextMap
     [SerializeField] [Min(0)] private float wanderWeight = 1;
     [SerializeField] private FastNoiseLite wanderDirectionNoiseGenerator;
 
+    private ContextMapSteering contextMap;
+
     private void Awake()
     {
+        contextMap = GetComponent<ContextMapSteering>();
         wanderDirectionNoiseGenerator.SetSeed(GetInstanceID());
     }
 
-    public override ControlData GetControlCommand(CharacterHost context)
+    private void Update() => RefreshContextMapValues();
+
+    private void RefreshContextMapValues()
     {
-        ControlData data = base.GetControlCommand(context);
-
-        //data.steering += directionNoise;
-
-        return data;
+        for (int i = 0; i < contextMap.entries.Length; ++i) _RefreshContextMapValue(ref contextMap.entries[i], contextMap.host);
     }
-
-    protected override void RefreshContextMapValues(CharacterHost context)
-    {
-        base.RefreshContextMapValues(context);
-        for (int i = 0; i < contextMap.Length; ++i) _RefreshContextMapValue(ref contextMap[i], context);
-    }
-
 
     [Header("Obstacle avoidance")]
     [SerializeField] [Min(0)] private float obstacleWeight = 1;
@@ -43,7 +38,7 @@ public sealed class AIImplementation : ControlProviderContextMap
     [SerializeField] [Min(0)] private float dynamicAvoidRange = 1;
     [SerializeField] private AnimationCurve dynamicAvoidShapeFunc = AnimationCurve.Linear(0, 1, 1, 0);
 
-    private void _RefreshContextMapValue(ref ContextMapEntry entry, CharacterHost context)
+    private void _RefreshContextMapValue(ref ContextMapSteering.Entry entry, CharacterHost context)
     {
         entry.value = 0;
 

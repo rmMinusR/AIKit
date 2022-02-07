@@ -5,6 +5,6 @@ using UnityEngine;
 /// <summary>
 /// Empty shell (for now)
 /// </summary>
-public abstract class IControlProviderAI : IControlProvider
+public abstract class ISteeringProviderAI : ISteeringProvider
 {
 }

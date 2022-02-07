@@ -13,7 +13,7 @@ public sealed class CharacterHost : MonoBehaviour
     [SerializeField] [Min  (0)   ] private float moveControlSteerRate = 0.5f;
 
     [Header("State")]
-    [SerializeReference] private IControlProvider controller;
+    [SerializeReference] private ISteeringProvider controller;
     [SerializeField] private float heading;
     public float Heading => heading;
     [SerializeField] [Range(0, 1)] private float speed;
@@ -39,7 +39,7 @@ public sealed class CharacterHost : MonoBehaviour
     private void Update()
     {
         //Fetch control data
-        lastControlInput = controller!=null ? controller.GetControlCommand(this) : default;
+        lastControlInput = controller!=null ? controller.GetControlCommand() : default;
 
         //Update movement with control data
         _TickMovement(); //FIXME coupling?

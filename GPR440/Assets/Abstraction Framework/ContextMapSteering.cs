@@ -10,36 +10,39 @@ using UnityEngine;
 //https://www.youtube.com/watch?v=I5UWsjT4udI&list=PL4QJmtZWf50kvAZap4Xd0JhVEgo9lxdZL&index=2
 //http://www.gameaipro.com/GameAIPro2/GameAIPro2_Chapter18_Context_Steering_Behavior-Driven_Steering_at_the_Macro_Scale.pdf
 
-public abstract class ControlProviderContextMap : IControlProviderAI
+public sealed class ContextMapSteering : ISteeringProviderAI
 {
     [Serializable]
-    protected struct ContextMapEntry
+    public struct Entry
     {
-        public float sourceAngle; //In radians
-        public Vector3 direction; //Must be normalized
+        [InspectorReadOnly] public float sourceAngle; //In radians
+        [InspectorReadOnly] public Vector3 direction; //Must be normalized
         public float value;
     }
 
-    [InspectorReadOnly] [SerializeField] protected ContextMapEntry[] contextMap = new ContextMapEntry[1];
+    public Entry[] entries = new Entry[1];
+    public CharacterHost host;
 
     private void Start()
     {
-        Debug.Assert(contextMap.Length > 0);
+        host = GetComponent<CharacterHost>();
+
+        Debug.Assert(entries.Length > 0);
 
         //Build context map angles
-        float angleStep = Mathf.PI*2f/contextMap.Length;
-        for (int i = 0; i < contextMap.Length; ++i)
+        float angleStep = Mathf.PI*2f/entries.Length;
+        for (int i = 0; i < entries.Length; ++i)
         {
-            contextMap[i].sourceAngle = i*angleStep;
-            contextMap[i].direction = new Vector3(Mathf.Cos(contextMap[i].sourceAngle), 0, Mathf.Sin(contextMap[i].sourceAngle));
+            entries[i].sourceAngle = i*angleStep;
+            entries[i].direction = new Vector3(Mathf.Cos(entries[i].sourceAngle), 0, Mathf.Sin(entries[i].sourceAngle));
         }
     }
 
-    protected virtual void OnDrawGizmos()
+    private void OnDrawGizmos()
     {
         _FindHighestAndLowest(recalc: false);
 
-        foreach (ContextMapEntry i in contextMap)
+        foreach (Entry i in entries)
         {
             Vector3 rootPos = transform.position + i.direction;
             Vector3 endPos = rootPos + i.direction * Mathf.Abs(i.value);
@@ -57,38 +60,38 @@ public abstract class ControlProviderContextMap : IControlProviderAI
         }
     }
 
-    public override ControlData GetControlCommand(CharacterHost context)
+    public override ControlData GetControlCommand()
     {
-        RefreshContextMapValues(context);
+        RefreshContextMapValues(host);
 
         //Find average value
         float avgValue = 0;
-        for(int i = 0; i < contextMap.Length; ++i) avgValue += contextMap[i].value;
-        avgValue /= contextMap.Length;
+        for(int i = 0; i < entries.Length; ++i) avgValue += entries[i].value;
+        avgValue /= entries.Length;
 
         //Find ID with highest associated value
         int bestChoiceID = 0;
-        for(int i = 1; i < contextMap.Length; ++i) if(contextMap[i].value > contextMap[bestChoiceID].value) bestChoiceID = i;
+        for(int i = 1; i < entries.Length; ++i) if(entries[i].value > entries[bestChoiceID].value) bestChoiceID = i;
 
         //TODO lerp angle based on gradient
 
         return new ControlData {
-            targetSpeed = RenormalizeValue(GetSmoothedValueAt(context.Heading)),
-            steering = Ext.AngleDiffSigned(context.Heading, contextMap[bestChoiceID].sourceAngle)
+            targetSpeed = RenormalizeValue(GetSmoothedValueAt(host.Heading)),
+            steering = Ext.AngleDiffSigned(host.Heading, entries[bestChoiceID].sourceAngle)
         };
     }
 
-    public virtual float GetSmoothedValueAt(float angleRadians)
+    public float GetSmoothedValueAt(float angleRadians)
     {
         angleRadians = Ext.PositiveWrap(angleRadians);
 
-        float radiansPerMapEntry = Mathf.PI*2/contextMap.Length;
+        float radiansPerMapEntry = Mathf.PI*2/entries.Length;
         float index = angleRadians/radiansPerMapEntry;
         int lowerIndex = (int)index;
-        int upperIndex = (lowerIndex + 1) % contextMap.Length;
+        int upperIndex = (lowerIndex + 1) % entries.Length;
         float lerpAmt = index%1;
 
-        return Mathf.Lerp(contextMap[lowerIndex].value, contextMap[upperIndex].value, lerpAmt);
+        return Mathf.Lerp(entries[lowerIndex].value, entries[upperIndex].value, lerpAmt);
     }
 
     private float? highestVal = null;
@@ -101,7 +104,7 @@ public abstract class ControlProviderContextMap : IControlProviderAI
             lowestVal  = null;
         }
 
-        foreach (ContextMapEntry i in contextMap)
+        foreach (Entry i in entries)
         {
             if (!highestVal.HasValue || i.value > highestVal.Value) highestVal = i.value;
             if (!lowestVal .HasValue || i.value < lowestVal .Value) lowestVal  = i.value;
@@ -118,7 +121,7 @@ public abstract class ControlProviderContextMap : IControlProviderAI
         return renormalizedVal;
     }
 
-    protected virtual void RefreshContextMapValues(CharacterHost context)
+    private void RefreshContextMapValues(CharacterHost context)
     {
         highestVal = null;
         lowestVal  = null;
