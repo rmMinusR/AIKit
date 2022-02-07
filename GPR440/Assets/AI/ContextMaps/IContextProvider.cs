@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(ContextMapSteering))]
 public abstract class IContextProvider : MonoBehaviour
 {
-    protected ContextMapSteering contextMap;
+    [NonSerialized] public ContextMapSteering contextMap;
+
+    [SerializeReference] [SubclassSelector] protected IShapingFunction shapingFunction;
 
     protected virtual void Start()
     {

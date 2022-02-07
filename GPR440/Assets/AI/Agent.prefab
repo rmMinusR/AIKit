@@ -171,7 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0668df59724c15d46b0f28ae2c56beb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  avoidWeight: 4
+  shapingFunction:
+    id: 0
+  avoidWeight: 3
   avoidRange: 3.5
   avoidShapeFunc:
     serializedVersion: 2
@@ -197,6 +199,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!114 &5626043403333013028
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,6 +215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6257771093314c643b383deda20ad104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shapingFunction:
+    id: 0
   currentHeadingWeight: 0.3
   currentHeadingShapeFunc:
     serializedVersion: 2
@@ -234,6 +242,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!114 &6903763691256559437
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2330a3b70b5e7b4fb4466dd6ea36ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shapingFunction:
+    id: 0
   wanderWeight: 1
   wanderDirectionNoiseGenerator:
     mSeed: 1337
@@ -266,6 +280,10 @@ MonoBehaviour:
     mDomainWarpType: 0
     mWarpTransformType3D: 3
     mDomainWarpAmp: 1
+  references:
+    version: 1
+    00000000:
+      type: {class: , ns: , asm: }
 --- !u!1 &501425886256472017
 GameObject:
   m_ObjectHideFlags: 0
