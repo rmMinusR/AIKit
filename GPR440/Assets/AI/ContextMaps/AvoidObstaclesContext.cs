@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AvoidObstaclesContext : IContextProvider
+public sealed class AvoidObstaclesContext : IContextProvider
 {
     [SerializeField] [Min(0)] private float avoidWeight = 1;
     [SerializeField] [Min(0)] private float avoidRange = 1;
@@ -17,7 +17,7 @@ public class AvoidObstaclesContext : IContextProvider
         public float basePressure;
     }
 
-    public override void RefreshContextMapValues()
+    protected override void RefreshContextMapValues()
     {
         //Compute nearby obstacles
         List<ClosePoint> closePoints = new List<ClosePoint>();
@@ -36,12 +36,12 @@ public class AvoidObstaclesContext : IContextProvider
             closePoints.Add(data);
         }
 
-        for (int i = 0; i < ContextMap.entries.Length; ++i)
+        for (int i = 0; i < entries.Length; ++i)
         {
             foreach(ClosePoint data in closePoints)
             {
-                float pressure = data.basePressure * Mathf.Clamp01(avoidShapeFunc.Evaluate(Mathf.Clamp01(Ext.AngleDiffUnsigned(ContextMap.entries[i].sourceAngle, data.angle) / Mathf.PI)));
-                ContextMap.entries[i].value -= pressure * avoidWeight;
+                float pressure = data.basePressure * Mathf.Clamp01(avoidShapeFunc.Evaluate(Mathf.Clamp01(Ext.AngleDiffUnsigned(entries[i].sourceAngle, data.angle) / Mathf.PI)));
+                entries[i].value -= pressure * avoidWeight;
             }
         }
     }

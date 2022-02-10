@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class RandomWalkContext : IContextProvider
+public sealed class RandomWalkContext : IContextProvider
 {
     [SerializeField] [Min(0)] private float wanderWeight = 1;
     [SerializeField] private FastNoiseLite wanderDirectionNoiseGenerator;
@@ -11,12 +11,12 @@ public class RandomWalkContext : IContextProvider
         wanderDirectionNoiseGenerator.SetSeed(GetInstanceID());
     }
 
-    public override void RefreshContextMapValues()
+    protected override void RefreshContextMapValues()
     {
-        for (int i = 0; i < ContextMap.entries.Length; ++i)
+        for (int i = 0; i < entries.Length; ++i)
         {
-            float directionNoise = wanderDirectionNoiseGenerator.GetNoise(ContextMap.entries[i].direction.x, Time.time, ContextMap.entries[i].direction.z) * wanderWeight;
-            ContextMap.entries[i].value += Mathf.Abs(directionNoise);
+            float directionNoise = wanderDirectionNoiseGenerator.GetNoise(entries[i].direction.x, Time.time, entries[i].direction.z) * wanderWeight;
+            entries[i].value += Mathf.Abs(directionNoise);
         }
     }
 }

@@ -10,17 +10,17 @@ public sealed class FlockAlignContext : IContextProvider
 
 
     [SerializeField] private AnimationCurve falloffCurve = AnimationCurve.Linear(1, 0, 0, 1);
-    
-    public override void RefreshContextMapValues()
+
+    protected override void RefreshContextMapValues()
     {
         foreach (FlockNeighborhood.Record record in Neighborhood.neighborhood)
         {
-            for(int i = 0; i < ContextMap.entries.Length; ++i)
+            for(int i = 0; i < entries.Length; ++i)
             {
-                float angleDiff = Ext.AngleDiffUnsigned(ContextMap.entries[i].sourceAngle, record.neighbor.Heading);
+                float angleDiff = Ext.AngleDiffUnsigned(entries[i].sourceAngle, record.neighbor.Heading);
                 float val = shapingFunction.Evaluate(angleDiff);
                 val *= falloffCurve.Evaluate(record.distance / Neighborhood.fovDistance);
-                ContextMap.entries[i].value += val;
+                entries[i].value += val;
             }
         }
     }

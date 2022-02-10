@@ -47,12 +47,12 @@ public sealed class ContextMapSteering : ISteeringProviderAI
             return __entries;
         }
     }
-    public CharacterHost host;
+
+    private CharacterHost __host;
+    public CharacterHost Host => __host!=null ? __host : (__host=GetComponent<CharacterHost>());
 
     private void Start()
     {
-        host = GetComponent<CharacterHost>();
-
         BuildEntries();
     }
 
@@ -101,8 +101,8 @@ public sealed class ContextMapSteering : ISteeringProviderAI
         //TODO lerp angle based on gradient
 
         return new ControlData {
-            targetSpeed = RenormalizeValue(GetSmoothedValueAt(host.Heading)),
-            steering = Ext.AngleDiffSigned(host.Heading, __entries[bestChoiceID].sourceAngle)
+            targetSpeed = RenormalizeValue(GetSmoothedValueAt(Host.Heading)),
+            steering = Ext.AngleDiffSigned(Host.Heading, __entries[bestChoiceID].sourceAngle)
         };
     }
 
@@ -154,7 +154,7 @@ public sealed class ContextMapSteering : ISteeringProviderAI
         lowestVal  = null;
 
         //Poll values
-        foreach (IContextProvider i in GetComponents<IContextProvider>()) if(i.isActiveAndEnabled) i.RefreshContextMapValues();
+        foreach (IContextProvider i in GetComponents<IContextProvider>()) if(i.isActiveAndEnabled) i.RefreshAndCopyContextMapValues();
 
         //Recalc bounds
         _FindHighestAndLowest(recalc: true);
