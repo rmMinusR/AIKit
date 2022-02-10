@@ -56,8 +56,14 @@ public sealed class ContextMapSteering : ISteeringProviderAI
         BuildEntries();
     }
 
+#if UNITY_EDITOR
+    [SerializeField] private bool enableGizmos = false;
+#endif
+
     private void OnDrawGizmos()
     {
+        if (!enableGizmos) return;
+
         _FindHighestAndLowest(recalc: false);
 
         foreach (Entry i in __entries)
@@ -140,7 +146,7 @@ public sealed class ContextMapSteering : ISteeringProviderAI
         return renormalizedVal;
     }
 
-    private void RefreshContextMapValues()
+    public void RefreshContextMapValues()
     {
         //Reset values
         for (int i = 0; i < __entries.Length; ++i) __entries[i].value = 0;
