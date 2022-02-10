@@ -14,13 +14,15 @@ GameObject:
   - component: {fileID: 2095490868040939650}
   - component: {fileID: 501425884862704422}
   - component: {fileID: 501425884862704603}
-  - component: {fileID: 7843080845216702037}
   - component: {fileID: 5919378383324760455}
+  - component: {fileID: 7125590575545190079}
+  - component: {fileID: 1976681120701574127}
+  - component: {fileID: 7367489870069722107}
   - component: {fileID: 6725990145864562416}
   - component: {fileID: 5626043403333013028}
   - component: {fileID: 6903763691256559437}
   m_Layer: 0
-  m_Name: Agent
+  m_Name: Boid Agent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,20 +124,6 @@ MonoBehaviour:
   heading: 0
   speed: 0
   rb: {fileID: 501425884862704423}
---- !u!114 &7843080845216702037
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 501425884862704604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3321c35980b8c984590c53e7af385623, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fovAngle: 45
-  fovDistance: 4
 --- !u!114 &5919378383324760455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +162,155 @@ MonoBehaviour:
     direction: {x: 0, y: 0, z: 0}
     value: 0
   host: {fileID: 501425884862704603}
+--- !u!114 &7125590575545190079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501425884862704604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3321c35980b8c984590c53e7af385623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  neighborhood: []
+  fovAngle: 45
+  fovDistance: 6
+--- !u!114 &1976681120701574127
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501425884862704604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557f69475ecad354db9bfab47088072e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapingFunction:
+    id: 0
+  falloffCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  references:
+    version: 1
+    00000000:
+      type: {class: ManualShape, ns: , asm: Assembly-CSharp}
+      data:
+        shape:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: -1
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -1
+            outSlope: 360
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
+--- !u!114 &7367489870069722107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 501425884862704604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2717c4aa237b8f42acf5c20b2a0b860, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shapingFunction:
+    id: 0
+  falloffCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: -1
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1
+      outSlope: 360
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  references:
+    version: 1
+    00000000:
+      type: {class: ManualShape, ns: , asm: Assembly-CSharp}
+      data:
+        shape:
+          serializedVersion: 2
+          m_Curve:
+          - serializedVersion: 3
+            time: 0
+            value: 1
+            inSlope: 0
+            outSlope: -1
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          - serializedVersion: 3
+            time: 1
+            value: 0
+            inSlope: -1
+            outSlope: 360
+            tangentMode: 69
+            weightedMode: 0
+            inWeight: 0
+            outWeight: 0
+          m_PreInfinity: 2
+          m_PostInfinity: 2
+          m_RotationOrder: 4
 --- !u!114 &6725990145864562416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,17 +334,26 @@ MonoBehaviour:
       time: 0
       value: 1
       inSlope: 0
-      outSlope: -1
-      tangentMode: 0
+      outSlope: -4
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
+      time: 0.2
+      value: 0.2
+      inSlope: -4
+      outSlope: -0.25
+      tangentMode: 69
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -1
-      outSlope: 0
-      tangentMode: 0
+      inSlope: -0.25
+      outSlope: -1
+      tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -225,7 +371,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 501425884862704604}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6257771093314c643b383deda20ad104, type: 3}
   m_Name: 

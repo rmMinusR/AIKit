@@ -7,6 +7,8 @@ public sealed class FlockCohesionContext : IContextProvider
 {
     private FlockNeighborhood neighborhood;
 
+    [SerializeField] private AnimationCurve falloffCurve = AnimationCurve.Linear(1, 0, 0, 1);
+
     protected override void Start()
     {
         base.Start();
@@ -16,6 +18,15 @@ public sealed class FlockCohesionContext : IContextProvider
 
     public override void RefreshContextMapValues()
     {
-        throw new System.NotImplementedException();
+        foreach (FlockNeighborhood.Record record in neighborhood.neighborhood)
+        {
+            for(int i = 0; i < contextMap.entries.Length; ++i)
+            {
+                float angleToTarget = Ext.AngleDiffUnsigned(contextMap.entries[i].sourceAngle, record.targetAngleRadians);
+                float val = shapingFunction.Evaluate(angleToTarget);
+                val *= falloffCurve.Evaluate(record.distance / neighborhood.fovDistance);
+                contextMap.entries[i].value += val;
+            }
+        }
     }
 }
