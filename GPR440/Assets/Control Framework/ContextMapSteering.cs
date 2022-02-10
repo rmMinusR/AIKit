@@ -20,29 +20,47 @@ public sealed class ContextMapSteering : ISteeringProviderAI
         public float value;
     }
 
-    public Entry[] entries = new Entry[1];
+    private void BuildEntries()
+    {
+        if (__entries.Length == lastKnownEntryCount) return;
+
+        Debug.Assert(__entries.Length > 0);
+
+        //Build context map angles
+        float angleStep = Mathf.PI * 2f / __entries.Length;
+        for (int i = 0; i < __entries.Length; ++i)
+        {
+            __entries[i].sourceAngle = i * angleStep;
+            __entries[i].direction = new Vector3(Mathf.Cos(__entries[i].sourceAngle), 0, Mathf.Sin(__entries[i].sourceAngle));
+        }
+
+        lastKnownEntryCount = __entries.Length;
+    }
+
+    [HideInInspector] [SerializeField] private int lastKnownEntryCount = -1;
+    [SerializeField] private Entry[] __entries = new Entry[1];
+    public Entry[] entries
+    {
+        get
+        {
+            BuildEntries();
+            return __entries;
+        }
+    }
     public CharacterHost host;
 
     private void Start()
     {
         host = GetComponent<CharacterHost>();
 
-        Debug.Assert(entries.Length > 0);
-
-        //Build context map angles
-        float angleStep = Mathf.PI*2f/entries.Length;
-        for (int i = 0; i < entries.Length; ++i)
-        {
-            entries[i].sourceAngle = i*angleStep;
-            entries[i].direction = new Vector3(Mathf.Cos(entries[i].sourceAngle), 0, Mathf.Sin(entries[i].sourceAngle));
-        }
+        BuildEntries();
     }
 
     private void OnDrawGizmos()
     {
         _FindHighestAndLowest(recalc: false);
 
-        foreach (Entry i in entries)
+        foreach (Entry i in __entries)
         {
             Vector3 rootPos = transform.position + i.direction;
             Vector3 endPos = rootPos + i.direction * Mathf.Abs(i.value);
@@ -67,18 +85,18 @@ public sealed class ContextMapSteering : ISteeringProviderAI
 
         //Find average value
         float avgValue = 0;
-        for(int i = 0; i < entries.Length; ++i) avgValue += entries[i].value;
-        avgValue /= entries.Length;
+        for(int i = 0; i < __entries.Length; ++i) avgValue += __entries[i].value;
+        avgValue /= __entries.Length;
 
         //Find ID with highest associated value
         int bestChoiceID = 0;
-        for(int i = 1; i < entries.Length; ++i) if(entries[i].value > entries[bestChoiceID].value) bestChoiceID = i;
+        for(int i = 1; i < __entries.Length; ++i) if(__entries[i].value > __entries[bestChoiceID].value) bestChoiceID = i;
 
         //TODO lerp angle based on gradient
 
         return new ControlData {
             targetSpeed = RenormalizeValue(GetSmoothedValueAt(host.Heading)),
-            steering = Ext.AngleDiffSigned(host.Heading, entries[bestChoiceID].sourceAngle)
+            steering = Ext.AngleDiffSigned(host.Heading, __entries[bestChoiceID].sourceAngle)
         };
     }
 
@@ -86,13 +104,13 @@ public sealed class ContextMapSteering : ISteeringProviderAI
     {
         angleRadians = Ext.PositiveWrap(angleRadians);
 
-        float radiansPerMapEntry = Mathf.PI*2/entries.Length;
+        float radiansPerMapEntry = Mathf.PI*2/__entries.Length;
         float index = angleRadians/radiansPerMapEntry;
         int lowerIndex = (int)index;
-        int upperIndex = (lowerIndex + 1) % entries.Length;
+        int upperIndex = (lowerIndex + 1) % __entries.Length;
         float lerpAmt = index%1;
 
-        return Mathf.Lerp(entries[lowerIndex].value, entries[upperIndex].value, lerpAmt);
+        return Mathf.Lerp(__entries[lowerIndex].value, __entries[upperIndex].value, lerpAmt);
     }
 
     private float? highestVal = null;
@@ -105,7 +123,7 @@ public sealed class ContextMapSteering : ISteeringProviderAI
             lowestVal  = null;
         }
 
-        foreach (Entry i in entries)
+        foreach (Entry i in __entries)
         {
             if (!highestVal.HasValue || i.value > highestVal.Value) highestVal = i.value;
             if (!lowestVal .HasValue || i.value < lowestVal .Value) lowestVal  = i.value;
@@ -125,7 +143,7 @@ public sealed class ContextMapSteering : ISteeringProviderAI
     private void RefreshContextMapValues()
     {
         //Reset values
-        for (int i = 0; i < entries.Length; ++i) entries[i].value = 0;
+        for (int i = 0; i < __entries.Length; ++i) __entries[i].value = 0;
         highestVal = null;
         lowestVal  = null;
 

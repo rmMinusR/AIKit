@@ -5,27 +5,22 @@ using UnityEngine;
 [RequireComponent(typeof(FlockNeighborhood))]
 public sealed class FlockCohesionContext : IContextProvider
 {
-    private FlockNeighborhood neighborhood;
+    private FlockNeighborhood __neighborhood;
+    private FlockNeighborhood Neighborhood => (__neighborhood!=null) ? __neighborhood : (__neighborhood=GetComponent<FlockNeighborhood>());
+
 
     [SerializeField] private AnimationCurve falloffCurve = AnimationCurve.Linear(1, 0, 0, 1);
 
-    protected override void Start()
-    {
-        base.Start();
-        neighborhood = GetComponent<FlockNeighborhood>();
-        Debug.Assert(neighborhood != null);
-    }
-
     public override void RefreshContextMapValues()
     {
-        foreach (FlockNeighborhood.Record record in neighborhood.neighborhood)
+        foreach (FlockNeighborhood.Record record in Neighborhood.neighborhood)
         {
-            for(int i = 0; i < contextMap.entries.Length; ++i)
+            for(int i = 0; i < ContextMap.entries.Length; ++i)
             {
-                float angleToTarget = Ext.AngleDiffUnsigned(contextMap.entries[i].sourceAngle, record.targetAngleRadians);
+                float angleToTarget = Ext.AngleDiffUnsigned(ContextMap.entries[i].sourceAngle, record.targetAngleRadians);
                 float val = shapingFunction.Evaluate(angleToTarget);
-                val *= falloffCurve.Evaluate(record.distance / neighborhood.fovDistance);
-                contextMap.entries[i].value += val;
+                val *= falloffCurve.Evaluate(record.distance / Neighborhood.fovDistance);
+                ContextMap.entries[i].value += val;
             }
         }
     }

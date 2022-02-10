@@ -36,12 +36,12 @@ public class AvoidObstaclesContext : IContextProvider
             closePoints.Add(data);
         }
 
-        for (int i = 0; i < contextMap.entries.Length; ++i)
+        for (int i = 0; i < ContextMap.entries.Length; ++i)
         {
             foreach(ClosePoint data in closePoints)
             {
-                float pressure = data.basePressure * Mathf.Clamp01(avoidShapeFunc.Evaluate(Mathf.Clamp01(Ext.AngleDiffUnsigned(contextMap.entries[i].sourceAngle, data.angle) / Mathf.PI)));
-                contextMap.entries[i].value -= pressure * avoidWeight;
+                float pressure = data.basePressure * Mathf.Clamp01(avoidShapeFunc.Evaluate(Mathf.Clamp01(Ext.AngleDiffUnsigned(ContextMap.entries[i].sourceAngle, data.angle) / Mathf.PI)));
+                ContextMap.entries[i].value -= pressure * avoidWeight;
             }
         }
     }

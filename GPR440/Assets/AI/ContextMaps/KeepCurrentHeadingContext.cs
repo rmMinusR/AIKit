@@ -8,10 +8,10 @@ public class KeepCurrentHeadingContext : IContextProvider
 
     public override void RefreshContextMapValues()
     {
-        for (int i = 0; i < contextMap.entries.Length; ++i)
+        for (int i = 0; i < ContextMap.entries.Length; ++i)
         {
-            float angleToHeading = Ext.AngleDiffUnsigned(contextMap.host.Heading, contextMap.entries[i].sourceAngle);
-            contextMap.entries[i].value += currentHeadingShapeFunc.Evaluate(angleToHeading / Mathf.PI) * currentHeadingWeight;
+            float angleToHeading = Ext.AngleDiffUnsigned(ContextMap.host.Heading, ContextMap.entries[i].sourceAngle);
+            ContextMap.entries[i].value += currentHeadingShapeFunc.Evaluate(angleToHeading / Mathf.PI) * currentHeadingWeight;
         }
     }
 }

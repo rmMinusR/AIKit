@@ -136,7 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 667b253d68d22d94fbd96c6315cd939e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entries:
+  lastKnownEntryCount: -1
+  __entries:
   - sourceAngle: 0
     direction: {x: 0, y: 0, z: 0}
     value: 0
