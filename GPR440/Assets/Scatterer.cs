@@ -15,7 +15,7 @@ public sealed class Scatterer : MonoBehaviour
     [Space]
     [SerializeField] private List<GameObject> instances;
 
-    private Vector3 FindRandomValidSpawnpoint()
+    public Vector3 FindRandomValidSpawnpoint()
     {
         Bounds bounds = targetZone.GetComponent<Collider>().bounds;
         for(int i = 0; i < 256; ++i)
@@ -42,16 +42,19 @@ public sealed class Scatterer : MonoBehaviour
 #endif
     }
 
+    public GameObject Drop()
+    {
+        Vector3 target = FindRandomValidSpawnpoint() + posOffset;
+        GameObject obj = InstantiatePrefab();
+        prefab.transform.position = target;
+        obj.transform.parent = targetParent;
+        instances.Add(obj);
+        return obj;
+    } 
+
     private void _Scatter()
     {
-        for(int i = instances.Count; i < count; ++i)
-        {
-            Vector3 target = FindRandomValidSpawnpoint() + posOffset;
-            GameObject obj = InstantiatePrefab();
-            prefab.transform.position = target;
-            obj.transform.parent = targetParent;
-            instances.Add(obj);
-        }
+        for(int i = instances.Count; i < count; ++i) Drop();
     }
 
     private void _Cleanup()

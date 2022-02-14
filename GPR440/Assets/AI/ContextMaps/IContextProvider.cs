@@ -27,7 +27,7 @@ public abstract class IContextProvider : MonoBehaviour
     }
 
     [SerializeReference] [SubclassSelector] protected IShapingFunction shapingFunction;
-    [SerializeField] private float weight = 1;
+    public float weight = 1;
     [SerializeField] private bool clampValues = true;
 
     protected virtual string GetDisplayName() => GetType().Name;

@@ -54,4 +54,12 @@ public sealed class ScoringSystem : MonoBehaviour
 
         if (neighborhood != null) score += Time.deltaTime * gainPerNeighbor * neighborhood.neighborhood.Count;
     }
+
+    public class Comparer : IComparer<ScoringSystem>
+    {
+        public int Compare(ScoringSystem x, ScoringSystem y)
+        {
+            return x.score.CompareTo(y.score);
+        }
+    }
 }
