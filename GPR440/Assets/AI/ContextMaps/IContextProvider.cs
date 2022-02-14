@@ -27,7 +27,8 @@ public abstract class IContextProvider : MonoBehaviour
     }
 
     [SerializeReference] [SubclassSelector] protected IShapingFunction shapingFunction;
-    public float weight = 1;
+    [SerializeField] private float weight = 1;
+    [SerializeField] private bool clampValues = true;
 
     protected virtual string GetDisplayName() => GetType().Name;
 
@@ -40,9 +41,12 @@ public abstract class IContextProvider : MonoBehaviour
 
         //Poll for new values
         RefreshContextMapValues();
-        
+
+        //Clamp internal buffer
+        if(clampValues) for (int i = 0; i < entries.Length; ++i) entries[i].value = Mathf.Clamp(entries[i].value, -1, 1);
+
         //Copy to steering
-        for(int i = 0; i < entries.Length; ++i) ContextMap.entries[i].value += entries[i].value * weight;
+        for (int i = 0; i < entries.Length; ++i) ContextMap.entries[i].value += entries[i].value * weight;
     }
 
 
