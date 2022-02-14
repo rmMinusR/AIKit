@@ -10,6 +10,8 @@ public class ScoringVisualizer : MonoBehaviour
 
     private void Update()
     {
-        target.text = "C="+source.CollisionCount;
+        target.text =   (int)source.score + "\n"
+                    + source. StaticCollisionCount+"S" + "/"
+                    + source.DynamicCollisionCount+"D";
     }
 }

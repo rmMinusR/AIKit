@@ -5,30 +5,53 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public sealed class ScoringSystem : MonoBehaviour
 {
-    [InspectorReadOnly(editMode = AccessMode.ReadOnly, playMode = AccessMode.ReadWrite)] [SerializeField] private int collisionCount;
-    public int CollisionCount => collisionCount;
-    
+    [InspectorReadOnly(editMode = AccessMode.ReadOnly, playMode = AccessMode.ReadWrite)] [SerializeField] private int staticCollisionCount;
+    public int StaticCollisionCount => staticCollisionCount;
+    [InspectorReadOnly(editMode = AccessMode.ReadOnly, playMode = AccessMode.ReadWrite)] [SerializeField] private int dynamicCollisionCount;
+    public int DynamicCollisionCount => dynamicCollisionCount;
+
+    [Header("Scoring")]
+    public float score;
+    [SerializeField] private float collisionPenalty = 10;
+    [SerializeField] private float gainPerNeighbor = 0.75f;
+    [SerializeField] private float passiveGain = 0.2f;
+
     [Space]
     [SerializeField] private float markCooldown;
     [InspectorReadOnly] [SerializeField] private float nextTimeMarkable;
 
+    private FlockNeighborhood neighborhood;
+
     private void Start()
     {
-        collisionCount = 0;
+        staticCollisionCount = 0;
+        dynamicCollisionCount = 0;
         nextTimeMarkable = 0;
+
+        neighborhood = GetComponent<FlockNeighborhood>();
     }
 
-    private void _TryMark()
+    private void _TryMark(Obstacle.Type whichType)
     {
         if(nextTimeMarkable < Time.time)
         {
             nextTimeMarkable = Time.time + markCooldown;
-            ++collisionCount;
+            score -= collisionPenalty;
+            if(whichType == Obstacle.Type.Static) ++staticCollisionCount;
+            if(whichType == Obstacle.Type.Dynamic) ++dynamicCollisionCount;
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.GetComponent<Obstacle>() != null) _TryMark();
+        Obstacle o = collision.gameObject.GetComponent<Obstacle>();
+        if (o != null) _TryMark(o.type);
+    }
+
+    private void Update()
+    {
+        score += Time.deltaTime * passiveGain;
+
+        if (neighborhood != null) score += Time.deltaTime * gainPerNeighbor * neighborhood.neighborhood.Count;
     }
 }
