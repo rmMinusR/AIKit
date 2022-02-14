@@ -35,11 +35,14 @@ public abstract class IContextProvider : MonoBehaviour
 
     public void RefreshAndCopyContextMapValues()
     {
+        //Reset internal buffer
+        for (int i = 0; i < entries.Length; ++i) entries[i].value = 0;
+
+        //Poll for new values
         RefreshContextMapValues();
-        for(int i = 0; i < entries.Length; ++i)
-        {
-            ContextMap.entries[i].value += entries[i].value * weight;
-        }
+        
+        //Copy to steering
+        for(int i = 0; i < entries.Length; ++i) ContextMap.entries[i].value += entries[i].value * weight;
     }
 
 

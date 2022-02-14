@@ -39,7 +39,7 @@ public sealed class AvoidObstaclesContext : IContextProvider
             foreach(ClosePoint data in closePoints)
             {
                 float pressure = data.basePressure * Mathf.Clamp01(shapingFunction.Evaluate(Mathf.Clamp(Ext.AngleDiffUnsigned(entries[i].sourceAngle, data.angle), 0, Mathf.PI)));
-                entries[i].value -= pressure;
+                entries[i].value += -pressure;
             }
         }
     }
