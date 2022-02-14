@@ -34,7 +34,7 @@ public abstract class IContextProvider : MonoBehaviour
 
     protected abstract void RefreshContextMapValues();
 
-    public void RefreshAndCopyContextMapValues()
+    private void RefreshContextMapValuesSafe()
     {
         //Reset internal buffer
         for (int i = 0; i < entries.Length; ++i) entries[i].value = 0;
@@ -43,7 +43,12 @@ public abstract class IContextProvider : MonoBehaviour
         RefreshContextMapValues();
 
         //Clamp internal buffer
-        if(clampValues) for (int i = 0; i < entries.Length; ++i) entries[i].value = Mathf.Clamp(entries[i].value, -1, 1);
+        if (clampValues) for (int i = 0; i < entries.Length; ++i) entries[i].value = Mathf.Clamp(entries[i].value, -1, 1);
+    }
+
+    public void RefreshAndCopyContextMapValues()
+    {
+        RefreshContextMapValuesSafe();
 
         //Copy to steering
         for (int i = 0; i < entries.Length; ++i) ContextMap.entries[i].value += entries[i].value * weight;

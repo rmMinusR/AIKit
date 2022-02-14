@@ -29,7 +29,7 @@ public class IContextMapProviderEditor : ContextMapEditorHelper
 
     public override void OnInspectorGUI()
     {
-        base.OnInspectorGUI();
+        DrawDefaultInspector();
 
         EditorGUILayout.Space();
         if (showingPreview = EditorGUILayout.BeginFoldoutHeaderGroup(showingPreview, "Preview"))

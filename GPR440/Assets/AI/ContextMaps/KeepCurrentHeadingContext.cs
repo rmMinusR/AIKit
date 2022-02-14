@@ -8,7 +8,7 @@ public sealed class KeepCurrentHeadingContext : IContextProvider
         for (int i = 0; i < entries.Length; ++i)
         {
             float angleToHeading = Ext.AngleDiffUnsigned(ContextMap.Host.Heading, entries[i].sourceAngle);
-            entries[i].value += shapingFunction.Evaluate(angleToHeading / Mathf.PI);
+            entries[i].value += shapingFunction.Evaluate(angleToHeading);
         }
     }
 }

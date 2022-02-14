@@ -5,16 +5,14 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-//[CustomEditor(typeof(IContextProvider))]
-//[CustomEditor(typeof(AvoidObstaclesContext))]
-//[CustomEditor(typeof(KeepCurrentHeadingContext))]
-//[CustomEditor(typeof(RandomWalkContext))]
 public abstract class ContextMapEditorHelper : Editor
 {
     protected const int PREVIEW_SIZE = 200;
 
     protected Material lineDrawMat;
     protected RenderTexture preview;
+
+    protected static float scale = 1;
 
     protected virtual void OnEnable()
     {
@@ -34,13 +32,17 @@ public abstract class ContextMapEditorHelper : Editor
         lineDrawMat = null;
     }
 
+    public override bool RequiresConstantRepaint() => Application.isPlaying;
+
     protected static void RenderPreview(RenderTexture renderTarget, Material lineDrawMat, ContextMapSteering.Entry[] entries, CharacterHost host)
     {
         //CommandBuffer gpu = new CommandBuffer();
         //gpu.ClearRenderTarget()
 
         float mostExtremeVal = Mathf.Max(entries.Select(i => Mathf.Abs(i.value)).ToArray());
-        float RenormalizeValueAndAbs(float val) => mostExtremeVal!=0 ? Mathf.Abs(val)/mostExtremeVal : 0;
+        scale = Mathf.Max(scale, mostExtremeVal);
+        float baseScale = Mathf.Pow(10, Mathf.CeilToInt(Mathf.Log10(scale)));
+        float RenormalizeValueAndAbs(float val) => Mathf.Abs(val)/scale;
 
         //Store state
         RenderTexture prevDrawTarget = RenderTexture.active;
@@ -69,26 +71,35 @@ public abstract class ContextMapEditorHelper : Editor
             VertexRadial(host.Heading +                0,      needleRadius);
             GL.End();
 
-            //Draw center circle
-            GL.Begin(GL.LINE_STRIP);
             int nEntries = entries.Length;
             const int centerRadius = 30;
-            GL.Color(Color.white);
-            for (int i = 0; i < nEntries+1; ++i)
+            const int entryRadius = 65;
+            void DrawCircle(float valAmt, Color col)
             {
-                VertexRadial(entries[i%nEntries].sourceAngle, centerRadius);
+                GL.Begin(GL.LINE_STRIP);
+                GL.Color(col);
+                for (int i = 0; i < nEntries+1; ++i)
+                {
+                    VertexRadial(entries[i % nEntries].sourceAngle, centerRadius + RenormalizeValueAndAbs(valAmt) * entryRadius);
+                }
+                GL.End();
             }
-            GL.End();
 
+            //Draw center circle
+            DrawCircle(0, Color.white);
+            
+            //Draw scale circles
+            for(float i = 0.1f; i < 1.0f; i += 0.1f) DrawCircle(i*baseScale, Color.gray);
+            DrawCircle(baseScale, Color.white);
+            
             //Draw context map entries
             GL.Begin(GL.LINES);
-            const int entryRadius = 50;
             for (int i = 0; i < nEntries; ++i)
             {
                 ContextMapSteering.Entry entry = entries[i];
                 GL.Color(entry.value<0 ? Color.red : Color.green);
                 VertexRadial(entry.sourceAngle, centerRadius);
-                VertexRadial(entry.sourceAngle, centerRadius+RenormalizeValueAndAbs(entry.value)*entryRadius);
+                VertexRadial(entry.sourceAngle, centerRadius + RenormalizeValueAndAbs(entry.value) * entryRadius);
             }
             GL.End();
             

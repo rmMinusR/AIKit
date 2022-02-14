@@ -7,6 +7,8 @@ public sealed class AvoidObstaclesContext : IContextProvider
     [SerializeField] [Min(0)] private float avoidRange = 1;
     [SerializeField] private AnimationCurve falloffCurve = AnimationCurve.Linear(0, 1, 1, 0);
 
+    [SerializeField] private bool normalizeValues;
+
     private struct ClosePoint
     {
         public Vector3 point;
@@ -39,9 +41,15 @@ public sealed class AvoidObstaclesContext : IContextProvider
         {
             foreach(ClosePoint data in closePoints)
             {
-                float pressure = data.basePressure * Mathf.Clamp01(shapingFunction.Evaluate(Mathf.Clamp(Ext.AngleDiffUnsigned(entries[i].sourceAngle, data.angle), 0, Mathf.PI)));
-                entries[i].value += -pressure;
+                entries[i].value += data.basePressure * shapingFunction.Evaluate(Mathf.Clamp(Ext.AngleDiffUnsigned(entries[i].sourceAngle, data.angle), 0, Mathf.PI));
             }
+        }
+
+        if (normalizeValues)
+        {
+            float normalizer = closePoints.Count;
+            normalizer = (normalizer!=0) ? 1/normalizer : 1;
+            for (int i = 0; i < entries.Length; ++i) entries[i].value *= normalizer;
         }
     }
 }
