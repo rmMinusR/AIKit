@@ -36,7 +36,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 501425884862704604}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 29.965782, y: 1.05, z: 31.439379}
+  m_LocalPosition: {x: 16.905622, y: 1.05, z: 38.925888}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 501425886519677580}
@@ -119,7 +119,7 @@ MonoBehaviour:
   moveSpeed: 8
   moveGripRatio: 0.95
   moveControlAccelRate: 0.9
-  moveControlSteerRate: 8
+  moveControlSteerRate: 3
   controller: {fileID: 5919378383324760455}
   heading: 0
   speed: 0
@@ -140,52 +140,52 @@ MonoBehaviour:
   __entries:
   - sourceAngle: 0
     direction: {x: 1, y: 0, z: 0}
-    value: 0.10369927
+    value: 0.083720036
   - sourceAngle: 0.3926991
     direction: {x: 0.9238795, y: 0, z: 0.38268346}
-    value: 1.6104584
+    value: 0.075876154
   - sourceAngle: 0.7853982
     direction: {x: 0.70710677, y: 0, z: 0.70710677}
-    value: 3.0636477
+    value: 0.069291264
   - sourceAngle: 1.1780972
     direction: {x: 0.38268343, y: 0, z: 0.9238795}
-    value: 4.034639
+    value: 0.06905992
   - sourceAngle: 1.5707964
     direction: {x: -0.00000004371139, y: 0, z: 1}
-    value: 4.3756084
+    value: 0.067042425
   - sourceAngle: 1.9634955
     direction: {x: -0.38268352, y: 0, z: 0.9238795}
-    value: 4.034639
+    value: 0.06309161
   - sourceAngle: 2.3561945
     direction: {x: -0.70710677, y: 0, z: 0.70710677}
-    value: 3.0636477
+    value: 0.05735464
   - sourceAngle: 2.7488937
     direction: {x: -0.9238796, y: 0, z: 0.38268328}
-    value: 1.610457
+    value: 0.05797122
   - sourceAngle: 3.1415927
     direction: {x: -1, y: 0, z: -0.00000008742278}
-    value: 0.103699654
+    value: 0.059846792
   - sourceAngle: 3.5342917
     direction: {x: -0.9238795, y: 0, z: -0.38268343}
-    value: 1.8178546
+    value: 0.06769067
   - sourceAngle: 3.926991
     direction: {x: -0.70710665, y: 0, z: -0.7071069}
-    value: 3.2710478
+    value: 0.0747947
   - sourceAngle: 4.31969
     direction: {x: -0.38268313, y: 0, z: -0.9238797}
-    value: 4.2420406
+    value: 0.08053167
   - sourceAngle: 4.712389
     direction: {x: 0.000000011924881, y: 0, z: -1}
-    value: 4.5830073
+    value: 0.08448248
   - sourceAngle: 5.105088
     direction: {x: 0.3826836, y: 0, z: -0.92387944}
-    value: 4.242039
+    value: 0.08649998
   - sourceAngle: 5.4977875
     direction: {x: 0.707107, y: 0, z: -0.70710653}
-    value: 3.2710474
+    value: 0.08673132
   - sourceAngle: 5.8904862
     direction: {x: 0.92387956, y: 0, z: -0.38268343}
-    value: 1.8178546
+    value: 0.0855956
   enableGizmos: 0
 --- !u!114 &7125590575545190079
 MonoBehaviour:
@@ -401,17 +401,17 @@ MonoBehaviour:
           - serializedVersion: 3
             time: 45
             value: 0.75
-            inSlope: -0.011111111
-            outSlope: -0.011111111
+            inSlope: -0.008888889
+            outSlope: -0.008888889
             tangentMode: 136
             weightedMode: 0
             inWeight: 0.33333334
             outWeight: 0.33333334
           - serializedVersion: 3
             time: 90
-            value: 0
-            inSlope: -0.016666668
-            outSlope: 0
+            value: 0.2
+            inSlope: -0.012222222
+            outSlope: -0.0022222223
             tangentMode: 69
             weightedMode: 0
             inWeight: 0.33333334
@@ -419,7 +419,7 @@ MonoBehaviour:
           - serializedVersion: 3
             time: 180
             value: 0
-            inSlope: -0
+            inSlope: -0.0022222223
             outSlope: 360
             tangentMode: 69
             weightedMode: 0

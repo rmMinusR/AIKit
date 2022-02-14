@@ -5,6 +5,7 @@ using UnityEngine;
 public sealed class AvoidObstaclesContext : IContextProvider
 {
     [SerializeField] [Min(0)] private float avoidRange = 1;
+    [SerializeField] private AnimationCurve falloffCurve = AnimationCurve.Linear(0, 1, 1, 0);
 
     private struct ClosePoint
     {
@@ -29,7 +30,7 @@ public sealed class AvoidObstaclesContext : IContextProvider
             data.angle = Mathf.Atan2(diff.z, diff.x);
             data.distance = diff.magnitude;
 
-            data.basePressure = 1 - Mathf.Clamp01(data.distance / avoidRange);
+            data.basePressure = falloffCurve.Evaluate(Mathf.Clamp01(data.distance / avoidRange));
 
             closePoints.Add(data);
         }
