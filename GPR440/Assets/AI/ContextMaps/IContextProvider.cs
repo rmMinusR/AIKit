@@ -27,6 +27,9 @@ public abstract class IContextProvider : MonoBehaviour
     }
 
     [SerializeReference] [SubclassSelector] protected IShapingFunction shapingFunction;
+    public float weight = 1;
+
+    protected virtual string GetDisplayName() => GetType().Name;
 
     protected abstract void RefreshContextMapValues();
 
@@ -35,7 +38,11 @@ public abstract class IContextProvider : MonoBehaviour
         RefreshContextMapValues();
         for(int i = 0; i < entries.Length; ++i)
         {
-            ContextMap.entries[i].value += entries[i].value;
+            ContextMap.entries[i].value += entries[i].value * weight;
         }
     }
+
+
+    //Literally only here so we can enable and disable
+    private void Update() { }
 }

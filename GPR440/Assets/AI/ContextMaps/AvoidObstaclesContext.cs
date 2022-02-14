@@ -4,9 +4,7 @@ using UnityEngine;
 
 public sealed class AvoidObstaclesContext : IContextProvider
 {
-    [SerializeField] [Min(0)] private float avoidWeight = 1;
     [SerializeField] [Min(0)] private float avoidRange = 1;
-    [SerializeField] private AnimationCurve avoidShapeFunc = AnimationCurve.Linear(0, 1, 1, 0);
 
     private struct ClosePoint
     {
@@ -40,8 +38,8 @@ public sealed class AvoidObstaclesContext : IContextProvider
         {
             foreach(ClosePoint data in closePoints)
             {
-                float pressure = data.basePressure * Mathf.Clamp01(avoidShapeFunc.Evaluate(Mathf.Clamp01(Ext.AngleDiffUnsigned(entries[i].sourceAngle, data.angle) / Mathf.PI)));
-                entries[i].value -= pressure * avoidWeight;
+                float pressure = data.basePressure * Mathf.Clamp01(shapingFunction.Evaluate(Mathf.Clamp(Ext.AngleDiffUnsigned(entries[i].sourceAngle, data.angle), 0, Mathf.PI)));
+                entries[i].value -= pressure;
             }
         }
     }
