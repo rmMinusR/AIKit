@@ -14,7 +14,7 @@ public sealed class ScoringSystem : MonoBehaviour
     [Header("Scoring")]
     public float score;
     [SerializeField] private float collisionPenalty = 10;
-    [SerializeField] private float gainPerNeighbor = 0.75f;
+    [SerializeField] private AnimationCurve neighborCurve = AnimationCurve.Linear(0, 0, 1, 1);
     [SerializeField] private float passiveGain = 0.2f;
 
     [Space]
@@ -43,7 +43,7 @@ public sealed class ScoringSystem : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         Obstacle o = collision.gameObject.GetComponent<Obstacle>();
         if (o != null) _TryMark(o.type);
@@ -57,7 +57,7 @@ public sealed class ScoringSystem : MonoBehaviour
         {
             foreach(FlockNeighborhood.Record i in neighborhood.neighborhood)
             {
-                score += Time.deltaTime * gainPerNeighbor * i.distance;
+                score += Time.deltaTime * neighborCurve.Evaluate(i.distance/neighborhood.fovDistance);
             }
         }
     }
