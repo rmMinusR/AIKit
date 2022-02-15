@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,7 +53,21 @@ public sealed class ScoringSystem : MonoBehaviour
     {
         score += Time.deltaTime * passiveGain;
 
-        if (neighborhood != null) score += Time.deltaTime * gainPerNeighbor * neighborhood.neighborhood.Count;
+        if (neighborhood != null)
+        {
+            foreach(FlockNeighborhood.Record i in neighborhood.neighborhood)
+            {
+                score += Time.deltaTime * gainPerNeighbor * i.distance;
+            }
+        }
+    }
+
+    public void ResetScoring()
+    {
+        score = 0;
+        nextTimeMarkable = -markCooldown;
+        staticCollisionCount = 0;
+        dynamicCollisionCount = 0;
     }
 
     public class Comparer : IComparer<ScoringSystem>
