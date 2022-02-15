@@ -5,7 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(Scatterer))]
 public sealed class Trainer : MonoBehaviour
 {
-    [SerializeField] private bool running = true;
     [SerializeField] [InspectorReadOnly] private int count = 0;
     [SerializeField] [Min(0)] private float duration = 60;
     [SerializeField] [Min(0)] private float variation = 0.1f;
@@ -18,7 +17,7 @@ public sealed class Trainer : MonoBehaviour
 
     IEnumerator TrainingCoroutine()
     {
-        while(running)
+        while(isActiveAndEnabled)
         {
             List<ScoringSystem> agents = new List<ScoringSystem>(FindObjectsOfType<ScoringSystem>());
             int targetCount = agents.Count;
