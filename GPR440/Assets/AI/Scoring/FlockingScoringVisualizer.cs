@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScoringVisualizer : MonoBehaviour
+public class FlockingScoringVisualizer : MonoBehaviour
 {
-    [SerializeField] private ScoringSystem source;
+    [SerializeField] private FlockingScoringSystem source;
     [SerializeField] private Text target;
 
     private void Update()
     {
-        target.text =   (int)source.score + "\n"
+        target.text =   (int)source.Score + "\n"
                     + source. StaticCollisionCount+"S" + "/"
                     + source.DynamicCollisionCount+"D";
     }

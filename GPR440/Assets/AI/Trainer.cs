@@ -24,7 +24,7 @@ public sealed class Trainer : MonoBehaviour
 
         while(isActiveAndEnabled)
         {
-            List<ScoringSystem> agents = new List<ScoringSystem>(FindObjectsOfType<ScoringSystem>());
+            List<ScoringSystem> agents = new List<ScoringSystem>(scatterer.GetAgentInstances().Select(x => x.GetComponent<ScoringSystem>()));
             int targetCount = scatterer.targetCount;
 
             Debug.Log(targetCount+" agents active");
@@ -87,11 +87,11 @@ public sealed class Trainer : MonoBehaviour
     [SerializeField] private List<ScoreRecord> best = new List<ScoreRecord>();
     void _FindAndDisplayBest()
     {
-        List<ScoringSystem> agents = new List<ScoringSystem>(FindObjectsOfType<ScoringSystem>());
+        List<ScoringSystem> agents = new List<ScoringSystem>(GetComponent<Scatterer>().GetAgentInstances().Select(x => x.GetComponent<ScoringSystem>()));
         agents.Sort(new ScoringSystem.Comparer());
         agents.Reverse();
 
         best.Clear();
-        best.AddRange(agents.Select(x => new ScoreRecord { obj = x, score = x.score }));
+        best.AddRange(agents.Select(x => new ScoreRecord { obj = x, score = x.Score }));
     }
 }

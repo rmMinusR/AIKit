@@ -14,6 +14,7 @@ public sealed class Scatterer : MonoBehaviour
 
     [Space]
     [SerializeField] private List<GameObject> instances;
+    public IReadOnlyList<GameObject> GetAgentInstances() => instances;
 
     public Vector3 FindRandomValidSpawnpoint()
     {
