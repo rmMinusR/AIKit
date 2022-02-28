@@ -44,7 +44,7 @@ public sealed class FlockNeighborhood : MonoBehaviour
             Vector3 diff = i.transform.position - transform.position;
             data.distance = diff.magnitude;
             data.targetAngleRadians = Mathf.Atan2(diff.z, diff.x);
-            data.headingInVisionRadians = Ext.AngleDiffUnsigned(host.Heading, data.targetAngleRadians);
+            data.headingInVisionRadians = AngleMath.AngleDiffUnsigned(host.Heading, data.targetAngleRadians);
 
             if (data.distance < fovDistance && data.headingInVisionRadians < allowedMaxAngleRadians) neighborhood.Add(data);
         }

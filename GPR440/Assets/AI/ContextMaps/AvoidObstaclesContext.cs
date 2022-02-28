@@ -41,7 +41,7 @@ public sealed class AvoidObstaclesContext : IContextProvider
         {
             foreach(ClosePoint data in closePoints)
             {
-                entries[i].value += data.basePressure * shapingFunction.Evaluate(Mathf.Clamp(Ext.AngleDiffUnsigned(entries[i].sourceAngle, data.angle), 0, Mathf.PI));
+                entries[i].value += data.basePressure * shapingFunction.Evaluate(Mathf.Clamp(AngleMath.AngleDiffUnsigned(entries[i].sourceAngle, data.angle), 0, Mathf.PI));
             }
         }
 

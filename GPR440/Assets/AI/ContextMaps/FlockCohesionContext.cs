@@ -18,7 +18,7 @@ public sealed class FlockCohesionContext : IContextProvider
         {
             for(int i = 0; i < entries.Length; ++i)
             {
-                float angleToTarget = Ext.AngleDiffUnsigned(entries[i].sourceAngle, record.targetAngleRadians);
+                float angleToTarget = AngleMath.AngleDiffUnsigned(entries[i].sourceAngle, record.targetAngleRadians);
                 float val = shapingFunction.Evaluate(angleToTarget);
                 val *= falloffCurve.Evaluate(record.distance / Neighborhood.fovDistance);
                 entries[i].value += val;

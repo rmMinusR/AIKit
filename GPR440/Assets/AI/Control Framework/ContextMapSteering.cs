@@ -102,13 +102,13 @@ public sealed class ContextMapSteering : ISteeringProviderAI
 
         return new ControlData {
             targetSpeed = RenormalizeValue(GetSmoothedValueAt(Host.Heading)),
-            steering = Ext.AngleDiffSigned(Host.Heading, __entries[bestChoiceID].sourceAngle)
+            steering = AngleMath.AngleDiffSigned(Host.Heading, __entries[bestChoiceID].sourceAngle)
         };
     }
 
     public float GetSmoothedValueAt(float angleRadians)
     {
-        angleRadians = Ext.PositiveWrap(angleRadians);
+        angleRadians = AngleMath.PositiveWrap(angleRadians);
 
         float radiansPerMapEntry = Mathf.PI*2/__entries.Length;
         float index = angleRadians/radiansPerMapEntry;
