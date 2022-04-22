@@ -101,8 +101,8 @@ public sealed class ContextMapSteering : ISteeringProviderAI
         //TODO lerp angle based on gradient
 
         return new ControlData {
-            targetSpeed = RenormalizeValue(GetSmoothedValueAt(Host.Heading)),
-            steering = AngleMath.AngleDiffSigned(Host.Heading, __entries[bestChoiceID].sourceAngle)
+            targetSpeed = RenormalizeValue(GetSmoothedValueAt(Host.steering.Heading)),
+            steering = AngleMath.AngleDiffSigned(Host.steering.Heading, __entries[bestChoiceID].sourceAngle)
         };
     }
 

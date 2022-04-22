@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public sealed class CharacterHost : MonoBehaviour
+public sealed class SteeringHost : MonoBehaviour
 {
     [Header("Movement settings")]
     [SerializeField] [Min  (0)   ] private float moveSpeed = 1f;

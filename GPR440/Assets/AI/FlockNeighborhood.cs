@@ -19,10 +19,9 @@ public sealed class FlockNeighborhood : MonoBehaviour
     [SerializeField] [Range(0, 360)] [Tooltip("In degrees")] private float fovAngle = 45;
     [Min(0)] public float fovDistance = 4;
 
-    private CharacterHost host;
+    [SerializeField] private CharacterHost host;
     private void Start()
     {
-        host = GetComponent<CharacterHost>();
         Debug.Assert(host != null);
     }
 
@@ -44,7 +43,7 @@ public sealed class FlockNeighborhood : MonoBehaviour
             Vector3 diff = i.transform.position - transform.position;
             data.distance = diff.magnitude;
             data.targetAngleRadians = Mathf.Atan2(diff.z, diff.x);
-            data.headingInVisionRadians = AngleMath.AngleDiffUnsigned(host.Heading, data.targetAngleRadians);
+            data.headingInVisionRadians = AngleMath.AngleDiffUnsigned(host.steering.Heading, data.targetAngleRadians);
 
             if (data.distance < fovDistance && data.headingInVisionRadians < allowedMaxAngleRadians) neighborhood.Add(data);
         }
@@ -69,14 +68,14 @@ public sealed class FlockNeighborhood : MonoBehaviour
         //Draw vision cone
         float allowedMaxAngleRadians = fovAngle / 2 * Mathf.Deg2Rad;
         Gizmos.color = Color.green;
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(Mathf.Cos(host.Heading + allowedMaxAngleRadians), 0, Mathf.Sin(host.Heading + allowedMaxAngleRadians))*fovDistance);
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(Mathf.Cos(host.Heading - allowedMaxAngleRadians), 0, Mathf.Sin(host.Heading - allowedMaxAngleRadians))*fovDistance);
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(Mathf.Cos(host.steering.Heading + allowedMaxAngleRadians), 0, Mathf.Sin(host.steering.Heading + allowedMaxAngleRadians))*fovDistance);
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(Mathf.Cos(host.steering.Heading - allowedMaxAngleRadians), 0, Mathf.Sin(host.steering.Heading - allowedMaxAngleRadians))*fovDistance);
         const float fovStep = 0.2f;
         for (float angle = -allowedMaxAngleRadians; angle < allowedMaxAngleRadians; angle += fovStep)
         {
             Gizmos.DrawLine(
-                transform.position + new Vector3(Mathf.Cos(host.Heading + angle          ), 0, Mathf.Sin(host.Heading + angle          )) * fovDistance,
-                transform.position + new Vector3(Mathf.Cos(host.Heading + angle + fovStep), 0, Mathf.Sin(host.Heading + angle + fovStep)) * fovDistance
+                transform.position + new Vector3(Mathf.Cos(host.steering.Heading + angle          ), 0, Mathf.Sin(host.steering.Heading + angle          )) * fovDistance,
+                transform.position + new Vector3(Mathf.Cos(host.steering.Heading + angle + fovStep), 0, Mathf.Sin(host.steering.Heading + angle + fovStep)) * fovDistance
             );
         }
     }

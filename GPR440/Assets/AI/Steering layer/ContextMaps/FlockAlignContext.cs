@@ -18,7 +18,7 @@ public sealed class FlockAlignContext : IContextProvider
         {
             for(int i = 0; i < entries.Length; ++i)
             {
-                float angleDiff = AngleMath.AngleDiffUnsigned(entries[i].sourceAngle, record.neighbor.Heading);
+                float angleDiff = AngleMath.AngleDiffUnsigned(entries[i].sourceAngle, record.neighbor.steering.Heading);
                 float val = shapingFunction.Evaluate(angleDiff);
                 val *= falloffCurve.Evaluate(record.distance / Neighborhood.fovDistance);
                 entries[i].value += val;
