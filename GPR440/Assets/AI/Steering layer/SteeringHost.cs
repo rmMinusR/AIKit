@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public sealed class SteeringHost : MonoBehaviour
+public sealed class SteeringHost : IAILayer
 {
     [Header("Movement settings")]
     [SerializeField] [Min  (0)   ] private float moveSpeed = 1f;
@@ -36,17 +36,11 @@ public sealed class SteeringHost : MonoBehaviour
     [NonSerialized] public ControlData lastControlInput;
     public Vector3 Movement3D => new Vector3(Mathf.Cos(heading), 0, Mathf.Sin(heading))*speed;
 
-    private void Update()
+    public override void PeriodicUpdate()
     {
         //Fetch control data
         lastControlInput = controller!=null ? controller.GetControlCommand() : default;
 
-        //Update movement with control data
-        _TickMovement(); //FIXME coupling?
-    }
-    
-    private void _TickMovement()
-    {
         //Update heading and sanity check
         heading += lastControlInput.steering * moveControlSteerRate * Time.deltaTime;
         heading -= Mathf.FloorToInt(heading / Mathf.PI/2) * Mathf.PI*2;
@@ -54,10 +48,13 @@ public sealed class SteeringHost : MonoBehaviour
         //Update speed and sanity check
         speed = Mathf.Lerp(lastControlInput.targetSpeed, speed, Mathf.Pow(1-moveControlAccelRate, Time.deltaTime));
         speed = Mathf.Clamp01(speed);
+    }
 
+    private void FixedUpdate()
+    {
         //Pull velocity from rigidbody
         Vector3 velocity = rb.velocity;
-
+        
         //Tick velocity
         Vector3 targetVelocity = Movement3D * moveSpeed;
         velocity = Vector3.Lerp(targetVelocity, velocity, Mathf.Pow(1-moveGripRatio, Time.deltaTime));
